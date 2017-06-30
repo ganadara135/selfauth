@@ -1,0 +1,55 @@
+<script>
+$(document).ready(function(){
+   $("#IDname").val("아이디를 입력해주세요");
+//   $("#lpassword").val("비밀번호를 입력해주세요");
+   $("#IDname").focus(function(){
+      $("#IDname").val("");
+   })
+   $("#IDname").focusout(function(){
+      if($("#IDname").val().length==0){
+         $("#IDname").val("아이디를 입력해주세요");
+      }
+   })
+})
+</script>
+<script>
+  function login(form){
+
+    var login_id = form.IDname.value;
+    var login_pw = $("#password").val();
+
+    console.log("login_id : ", login_id);
+    console.log("login_pw : ", login_pw);
+
+    if (login_id == null || login_id == "") {
+      alert("Please enter ID.");
+  //      $("#elusername").focus();
+      return false;
+    }
+    if (login_pw == null || login_pw == "") {
+      alert("Please enter Password.");
+  //      $("#elusername").focus();
+      return false;
+    }
+
+    form.action = "/login/"+login_id;
+  };
+
+  function enroll(){
+    location.href="/enroll";
+  };
+
+</script>
+
+
+<h1>로그인 화면(첫화면)</h1>
+
+<form name=loginForm method=post>
+아 이 디: <input type="text" name="IDname" id="IDname"><br>
+비밀번호: <input type="password" name="password" id="password"><br>
+<input type=submit value='로그인 버튼' onclick='return login(this.form);'><br>
+
+</form>
+
+<button type="button">지문인식 버튼</button><br>
+<button type="button" onClick="enroll()">회원가입</button><br>

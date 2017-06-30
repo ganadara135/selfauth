@@ -1,0 +1,53 @@
+<html>
+  <head>
+    <% include ./header.ejs %>
+    <script>
+
+    function watching(){
+      var txt, x, myObj;
+      var xmlhttp = new XMLHttpRequest();
+      xmlhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+
+//          $("tmpTag2").append(this.responseText);
+          myObj = JSON.parse(this.responseText);
+          txt = "<table border='1'>"
+          for (x in myObj) {
+              txt += "<tr><td>"+x+"</td><td>" + myObj[x] + "</td></tr>";
+          }
+          txt += "</table>"
+          document.getElementById("tmpTag2").innerHTML = txt;
+        }
+      };
+
+      var alias = "<%= IDname %>";
+      xmlhttp.open("POST", "/watching/"+alias, true);
+      xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+      xmlhttp.send();
+      //xmlhttp.send("IDname="+alias+"&"+"password=" + enroll_pw);
+    }
+    function booking(){
+
+      location.href="/booking/"+ "<%= IDname %>";
+    }
+    function manageWebPW(){
+      location.href="/pwmanage/"+ "<%= IDname %>";
+    }
+    function logout(){
+      location.href="/logout";
+    }
+    </script>
+  </head>
+  <body>
+    <% if(IDname){ %>
+        <h2>Welcome! <%= IDname %> <%= amount %> </h2>
+        <tmpTag2 id="tmpTag2">  </tmpTag2><br>
+        <button  onclick="watching()"> 사용내역확인 </button><br>
+        <button  onclick="booking()" >사용예약등록</button><br>
+        <button  onclick="manageWebPW()">웹사이트계정관리</button><br>
+        <button  onclick="logout()">logout</button><br>
+    <% }else{ %>
+        <h2> Please Login. choice.ejs 페이지 </h2>
+    <% } %>
+  </body>
+</html>

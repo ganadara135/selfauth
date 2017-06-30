@@ -1,0 +1,12 @@
+{
+  "name": "myChain",
+  "version": "0.0.1",
+  "dependencies": {
+    "body-parser": "~1.14.2",
+    "chain-sdk": "~1.2.0-rc.2",
+    "ejs": "~2.4.1",
+    "express": "~4.13.1",
+    "express-session": "~1.13.0",
+    "moment": "^2.18.1"
+  }
+}

@@ -1,0 +1,142 @@
+<html>
+  <head>
+    <% include ./header.ejs %>
+    <script>
+    $(document).ready(function(){
+      var d = new Date();
+//      var str = currentDate.toLocaleTimeString();
+      var oneHour = 60000 * 10 * 6;
+//      var limitDate = new Date(currentDate.getTime()+oneHour);
+      var limitDate = new Date(Date.UTC(d.getFullYear(),d.getMonth(),d.getDate(),
+      d.getHours(),d.getMinutes(),d.getSeconds(),d.getMilliseconds())+oneHour);
+
+      alert(limitDate);
+
+      $("#bday").val(limitDate.toISOString().slice(0,10));
+      $("#btime").val(limitDate.toISOString().slice(11,16));
+
+    });
+
+    function logout(){
+      location.href="/logout";
+    }
+
+    function setXpub() {
+      var msg;
+      if(typeof(Storage) !== "undefined") {
+          var xpub = localStorage.getItem("myJSONxpub")
+
+          if (xpub) {
+      //      alert(xpub);
+              var myObj  = JSON.parse(JSON.parse(xpub));
+              var tmp = myObj.xpub;
+          //    alert(tmp);
+              msg = tmp;
+
+          } else {
+              msg = "등록된 xpub 이 없습니다.";
+          }
+      } else {
+          msg = "Sorry, your browser does not support web storage...";
+      }
+      alert(msg);
+
+      document.getElementById("userXpub").value = msg;
+    }
+
+    function bookingUse(){
+      var bbday = document.getElementById("bday").value;
+      var bbtime = document.getElementById("btime").value;
+      var bbxpub = document.getElementById("userXpub").value;
+      var bbpurpose = document.getElementById("bpurpose").value;
+
+      if (bbpurpose == null || bbpurpose == "") {
+        alert("Please enter purpose.");
+        $("#bpurpose").focus();
+        return false;
+      }
+
+      var userName = "<%= IDname %>";
+      var currentDate = new Date();
+      var bookingDate = new Date(bbday+'T'+bbtime+":00Z");
+      bookingDate.setTime(bookingDate.getTime() + (currentDate.getTimezoneOffset() * 60000 ) )
+      var oneHour = 60000 * 10 * 6;
+
+      if(bookingDate.getTime() >= currentDate.getTime() + oneHour){
+        alert("정상처리"  + bookingDate.toISOString() +" / " + bookingDate.getTime());
+      }else{
+        alert("비정상처리");
+        return false;
+      }
+
+      var xmlhttp = new XMLHttpRequest();
+      xmlhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+
+          $("myTagTmp").append(this.responseText);
+          document.getElementById("bookingButton").disabled = true;
+          document.getElementById("goToChoiceId").disabled = false;
+
+        }
+      }
+      xmlhttp.open("POST", "/bookingUse/"+userName, true);
+      xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+      xmlhttp.send("bookingTime="+bookingDate.getTime()+"&"+"xpub=" + bbxpub+"&"+"purpose=" + bbpurpose);
+//      xmlhttp.send();
+    }
+
+
+    function startTime() {
+        var today = new Date();
+        var h = today.getHours();
+        var m = today.getMinutes();
+        var s = today.getSeconds();
+        m = checkTime(m);
+        s = checkTime(s);
+        document.getElementById('clock').innerHTML =
+        h + ":" + m + ":" + s;
+        var t = setTimeout(startTime, 500);
+    }
+    function checkTime(i) {
+        if (i < 10) {i = "0" + i}; // 숫자가 10보다 작을 경우 앞에 0을 붙여줌
+        return i;
+    }
+
+    function goToChoice(){
+      var userName = "<%= IDname %>";
+      location.href="/choice/"+userName;
+    }
+    </script>
+  </head>
+  <body onload="startTime()">
+      <form method="post">
+        <fieldset>
+          사용일시 (현재시간: <divTime id="clock"></divTime>)<br>
+          <input type="date" name="bday" id="bday" max=""  required>
+          <input type="time" name="btime" id="btime" required><br>
+          사용용도<br>
+          <input type="text" name="purpose" id="bpurpose"><br>
+
+          <fieldset>
+            <legend>비밀키 입력</legend>
+            <input type="text" id="userXpub" >
+            <input type="button" value="입력" onclick="setXpub()"><br>
+          </fieldset>
+        <input type="button" value='예약등록 버튼' id="bookingButton" onclick="bookingUse()">
+        <input type="button" value='나가기' id="goToChoiceId" onclick="goToChoice()">
+        </fieldset>
+      </form>
+
+<h2>Welcome! <%= IDname %> </h2>
+
+      <myTagTmp id="bookingRecord">
+      </myTagTmp>
+
+
+
+        <button  onClick="logout()">logout</button><br>
+        <h2> Please Login. booking.ejs 페이지   </h2>
+
+
+  </body>
+</html>
