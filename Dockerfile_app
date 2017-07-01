@@ -16,4 +16,4 @@ EXPOSE  3000 1999 80
 CMD [ "npm", "start" ]
 
 #컨테이너  생성 명령어
-#docker run -d -p 3000:3000 --rm --name myappc myapp node server.js
+#docker run --name myappc -p 3000:3000 -v d:\\mychain:/usr/src/app myapp node server.js

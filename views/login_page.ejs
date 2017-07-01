@@ -13,9 +13,16 @@ $(document).ready(function(){
 })
 </script>
 <script>
-  function login(form){
+  function login(){
 
-    var login_id = form.IDname.value;
+    var tagVar = document.getElementsByTagName("section");
+//    console.log("tagVar[0] : ", tagVar[0]);
+//    console.log("tagVar : ", tagVar);
+//console.log("tagVar[0].children : ", tagVar[0].children);
+//console.log("tagVar[0].children.IDname : ", tagVar[0].children.IDname);
+console.log("tagVar[0].children.IDname.value : ", tagVar[0].children.IDname.value);
+
+    var login_id = tagVar[0].children.IDname.value;
     var login_pw = $("#password").val();
 
     console.log("login_id : ", login_id);
@@ -23,16 +30,29 @@ $(document).ready(function(){
 
     if (login_id == null || login_id == "") {
       alert("Please enter ID.");
-  //      $("#elusername").focus();
       return false;
     }
     if (login_pw == null || login_pw == "") {
       alert("Please enter Password.");
-  //      $("#elusername").focus();
       return false;
     }
 
-    form.action = "/login/"+login_id;
+//    form.action = "/login/"+login_id;
+
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+
+        console.log("responseText  : " + this.responseText)
+        $("myTagTmp").append(this.responseText);
+//        document.getElementById("bookingButton").disabled = true;
+//        document.getElementById("goToChoiceId").disabled = false;
+      }
+    }
+    xmlhttp.open("POST", "/login/"+login_id, true);
+    xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+//    xmlhttp.send("bookingTime="+bookingDate.getTime()+"&"+"xpub=" + bbxpub+"&"+"purpose=" + bbpurpose);
+    xmlhttp.send();
   };
 
   function enroll(){
@@ -44,12 +64,17 @@ $(document).ready(function(){
 
 <h1>로그인 화면</h1>
 
-<form name=loginForm method=post>
+<h1>
+  <myTagTmp>
+  테스트
+  </myTagTmp>
+</h1>
+
+<section>
 아 이 디: <input type="text" name="IDname" id="IDname"><br>
 비밀번호: <input type="password" name="password" id="password"><br>
-<input type=submit value='로그인 버튼' onclick='return login(this.form);'><br>
-
-</form>
+<input type=button value='로그인 버튼' onclick='return login();'><br>
+</section>
 
 <button type="button">지문인식 버튼</button><br>
-<button type="button" onClick="enroll()">회원가입</button><br>
+<button type="button" onclick="enroll()">회원가입</button><br>

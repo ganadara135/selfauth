@@ -428,12 +428,12 @@ console.log("choice/:IDname/ : ", req.params.IDname);
         var sess;
         sess = req.session;
 //        var password = req.body["password"];
-/*
+
         console.log("req.session  : ", req.session);
         console.log("res.session  : ", res.session);
         console.log("req.body  : ", req.body);
         console.log("req.body[password] : ", req.body["password"]);
-*/
+
         fs.readFile(__dirname + "/../data/user.json", "utf8", function(err, data){
             var users = JSON.parse(data);
             var IDname = req.params.IDname;
