@@ -1,4 +1,6 @@
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.3/jquery.min.js"></script>
+
+<% include ./header.ejs %>
+
 <script>
 $(document).ready(function(){
    $("#IDenroll").val("아이디를 입력해주세요");
@@ -84,19 +86,10 @@ function createKeyAssetAccout() {
 };
 function choice(){
   var enroll_id = document.getElementById("IDenroll").value;
-  location.href="/choice/"+enroll_id;
+  location.href="/choice/"+enroll_id;    // 이 방식으로 전달하면 서버를 안거치므로 서버의 다른 파일들을(CSS 등)을 로드 못함
 }
 </script>
-<style>
-table, th, td {
-    border: 1px solid black;
-    border-collapse: collapse;
-}
-th, td {
-    padding: 5px;
-    text-align: center;
-}
-</style>
+
 <h1> 회원가입화면</h1>
 <table style="width:80%" >
   <caption>- 계정생성 -</caption>

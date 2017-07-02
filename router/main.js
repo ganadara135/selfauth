@@ -12,10 +12,9 @@ module.exports = function(app, fs)
       var sess = req.session;
 
       res.render('index', {
-          title: "MY HOMEPAGE",
+          title: "로그인화면",
           length: 5,
           IDname: sess.IDname
-//          username: sess.username
       })
   });
 
@@ -370,7 +369,7 @@ console.log("choice/:IDname/ : ", req.params.IDname);
    });
   });
 
-// 비밀번호 업데이트로 활용
+// 비밀번호 변경으로  활용
   app.put('/updateUser/:username', function(req, res){
 
     var result = {  };
@@ -442,7 +441,7 @@ console.log("choice/:IDname/ : ", req.params.IDname);
             if(!users[IDname]){
                 // USERNAME NOT FOUND
                 result["success"] = 0;
-                result["error"] = "not found";
+                result["error"] = "ID incorrect";
                 res.json(result);
                 return;
             }
@@ -468,7 +467,7 @@ console.log("choice/:IDname/ : ", req.params.IDname);
 
             }else{
                 result["success"] = 0;
-                result["error"] = "incorrect";
+                result["error"] = "PW incorrect";
                 res.json(result);
             }
         })

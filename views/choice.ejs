@@ -1,5 +1,3 @@
-<html>
-  <head>
     <% include ./header.ejs %>
     <script>
 
@@ -37,8 +35,8 @@
       location.href="/logout";
     }
     </script>
-  </head>
-  <body>
+
+
     <% if(IDname){ %>
         <h2>Welcome! <%= IDname %> <%= amount %> </h2>
         <tmpTag2 id="tmpTag2">  </tmpTag2><br>
@@ -49,5 +47,3 @@
     <% }else{ %>
         <h2> Please Login. choice.ejs 페이지 </h2>
     <% } %>
-  </body>
-</html>

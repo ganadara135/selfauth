@@ -1,4 +1,14 @@
 body{
     background-color: black;
+    border-color: white;
     color: white;
+}
+
+table, th, td {
+    border: 1px solid white;
+    border-collapse: collapse;
+}
+th, td {
+    padding: 5px;
+    text-align: center;
 }

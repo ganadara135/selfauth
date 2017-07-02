@@ -16,11 +16,8 @@ $(document).ready(function(){
   function login(){
 
     var tagVar = document.getElementsByTagName("section");
-//    console.log("tagVar[0] : ", tagVar[0]);
-//    console.log("tagVar : ", tagVar);
-//console.log("tagVar[0].children : ", tagVar[0].children);
-//console.log("tagVar[0].children.IDname : ", tagVar[0].children.IDname);
-console.log("tagVar[0].children.IDname.value : ", tagVar[0].children.IDname.value);
+
+    console.log("tagVar[0].children.IDname.value : ", tagVar[0].children.IDname.value);
 
     var login_id = tagVar[0].children.IDname.value;
     var login_pw = $("#password").val();
@@ -42,11 +39,8 @@ console.log("tagVar[0].children.IDname.value : ", tagVar[0].children.IDname.valu
     var xmlhttp = new XMLHttpRequest();
     xmlhttp.onreadystatechange = function() {
       if (this.readyState == 4 && this.status == 200) {
-
-        console.log("responseText  : " + this.responseText)
-        $("myTagTmp").append(this.responseText);
-//        document.getElementById("bookingButton").disabled = true;
-//        document.getElementById("goToChoiceId").disabled = false;
+        console.log("responseText  : " + this.responseText);
+        $("responsePanel").append(JSON.parse(this.responseText).error);
       }
     }
     xmlhttp.open("POST", "/login/"+login_id, true);
@@ -58,23 +52,23 @@ console.log("tagVar[0].children.IDname.value : ", tagVar[0].children.IDname.valu
   function enroll(){
     location.href="/enroll";
   };
-
 </script>
 
 
-<h1>로그인 화면</h1>
+<h1>셀프인증시스템</h1>
 
-<h1>
-  <myTagTmp>
-  테스트
-  </myTagTmp>
-</h1>
+<h2>
+  <responsePanel>
+  </responsePanel>
+</h2>
 
 <section>
-아 이 디: <input type="text" name="IDname" id="IDname"><br>
-비밀번호: <input type="password" name="password" id="password"><br>
-<input type=button value='로그인 버튼' onclick='return login();'><br>
+아 이 디 <br>
+<input type="text" name="IDname" id="IDname"><br>
+비밀번호 <br>
+<input type="password" name="password" id="password"><br><br>
+<input type=button value='로그인' onclick='return login();'><br><br>
 </section>
+<button type="button">지문인식(미작동)</button><br>
 
-<button type="button">지문인식 버튼</button><br>
 <button type="button" onclick="enroll()">회원가입</button><br>
