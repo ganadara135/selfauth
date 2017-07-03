@@ -18,5 +18,5 @@ CMD [ "npm", "start" ]
 #이미지생성 명령어
 #docker build -t {원하는 이미지명} .   {. 마침표는 현재폴더위치에서를 의미}
 
-#컨테이너  생성 명령어
+#컨테이너  생성 명령어(윈도우환경에서 호스트폴더 연결하여 개발시)
 #docker run --name myappc -p 3000:3000 -v d:\\mychain:/usr/src/app myapp node server.js

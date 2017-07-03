@@ -51,6 +51,15 @@ th, td {
     function manageWebPW(){
       location.href="/pwmanage/"+ "<%= IDname %>";
     }
+    function manageBitcoinW(){
+      alert("서비스준비중입니다.")
+    }
+    function manageAccessC(){
+      alert("서비스준비중입니다.")
+    }
+    function managePrivateKey(){
+      alert("서비스준비중입니다.")
+    }
     function logout(){
       location.href="/logout";
     }
@@ -62,7 +71,15 @@ th, td {
         <tmpTag2 id="tmpTag2">  </tmpTag2><br>
         <button  onclick="watching()"> 사용내역확인 </button><br>
         <button  onclick="booking()" >사용예약등록</button><br>
-        <button  onclick="manageWebPW()">웹사이트계정관리</button><br>
+
+        <fieldset>
+          <legend>가능한 서비스</legend>
+          <button  onclick="manageWebPW()">웹사이트 계정관리</button><br>
+          <button  onclick="manageBitcoinW()">비트코인 지갑관리</button><br>
+          <button  onclick="manageAccessC()">중요파일 접근관리</button><br>
+          <button  onclick="managePrivateKeyC()">비밀키 접근관리</button><br>
+        </fieldset>
+        <br>
         <button  onclick="logout()">logout</button><br>
     <% }else{ %>
         <h2> Please Login. choice.ejs 페이지 </h2>
