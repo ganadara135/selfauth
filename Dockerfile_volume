@@ -1,0 +1,5 @@
+# 볼륨 컨테이너용 이미지 생성용
+
+FROM busybox:latest
+RUN mkdir -p /usr/src/app
+VOLUME ["/usr/src/app"]

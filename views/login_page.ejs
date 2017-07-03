@@ -40,13 +40,17 @@ $(document).ready(function(){
     xmlhttp.onreadystatechange = function() {
       if (this.readyState == 4 && this.status == 200) {
         console.log("responseText  : " + this.responseText);
+
         $("responsePanel").append(JSON.parse(this.responseText).error);
+        if( JSON.parse(this.responseText).success == 1)
+          location.href="/choice/"+login_id;
       }
     }
-    xmlhttp.open("POST", "/login/"+login_id, true);
-    xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-//    xmlhttp.send("bookingTime="+bookingDate.getTime()+"&"+"xpub=" + bbxpub+"&"+"purpose=" + bbpurpose);
-    xmlhttp.send();
+
+    xmlhttp.open("POST", "/login/"+login_id, true);  //true Asyc, false syc
+//    xmlhttp.setRequestHeader("Content-type", "application/json");
+    xmlhttp.setRequestHeader("content-type", "application/x-www-form-urlencoded");
+    xmlhttp.send("IDname="+login_id+"&"+"password=" + login_pw);
   };
 
   function enroll(){

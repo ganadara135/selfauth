@@ -1,0 +1,15 @@
+<html>
+  <head>
+    <%= title %>
+    <script>
+    function goToChoice(){
+      var userName = "<%= IDname %>";
+      location.href="/choice/"+userName;
+    }
+    </script>
+  </head>
+  <body>
+    <h1> 유효한 예약내역이 없습니다. </h1>
+    <input type="button" value='나가기' id="goToChoiceId" onclick="goToChoice()"></td></tr>
+  </body>
+</html>

@@ -1,6 +1,23 @@
 <html>
   <head>
-    <% include ./header.ejs %>
+  <style>
+  body{
+      background-color: black;
+      border-color: white;
+      color: white;
+  }
+
+  table, th, td {
+      border: 1px solid white;
+      border-collapse: collapse;
+  }
+  th, td {
+      padding: 5px;
+      text-align: center;
+  }
+  </style>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.3/jquery.min.js"></script>
+
     <script>
     $(document).ready(function(){
       $("#currentSite").val(location.host);
@@ -155,7 +172,7 @@
           document.getElementById("tableTag").innerHTML = "Sorry, your browser does not support Web Storage...";
       }
     }
-    
+
     function goToChoice(){
       var userName = "<%= IDname %>";
       location.href="/choice/"+userName;
@@ -175,7 +192,7 @@
           <tr ><td colspan="2">현재사이트주소</td></tr>
           <tr ><td colspan='2'><input type="text" id="currentSite" ></td></tr>
           <tr ><td colspan='2'>사이트주소입력 및 등록여부</td></tr>
-          <tr ><td><input type="text" id="enrollSite" ></td></tr>
+          <tr ><td colspan='2'><input type="text" id="enrollSite" ></td></tr>
           <tr> <td>ID</td>  <td><input type="text" id="siteID" ></td></tr>
           <tr> <td>PW</td>  <td><input type="text" id="sitePW" ></td></tr>
           <tr ><td><input type="button" id="enrollButton" onclick="storeUserData()" value="등록/변경"></td>

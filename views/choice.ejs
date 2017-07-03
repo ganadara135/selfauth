@@ -1,4 +1,24 @@
-    <% include ./header.ejs %>
+<head>
+<title>
+    <%= title %>
+</title>
+<style>
+body{
+    background-color: black;
+    border-color: white;
+    color: white;
+}
+
+table, th, td {
+    border: 1px solid white;
+    border-collapse: collapse;
+}
+th, td {
+    padding: 5px;
+    text-align: center;
+}
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.3/jquery.min.js"></script>
     <script>
 
     function watching(){
@@ -35,7 +55,7 @@
       location.href="/logout";
     }
     </script>
-
+</head>
 
     <% if(IDname){ %>
         <h2>Welcome! <%= IDname %> <%= amount %> </h2>

@@ -1,5 +1,24 @@
 
-<% include ./header.ejs %>
+<title>
+    <%= title %>
+</title>
+<style>
+body{
+    background-color: black;
+    border-color: white;
+    color: white;
+}
+
+table, th, td {
+    border: 1px solid white;
+    border-collapse: collapse;
+}
+th, td {
+    padding: 5px;
+    text-align: center;
+}
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.3/jquery.min.js"></script>
 
 <script>
 $(document).ready(function(){
@@ -89,6 +108,7 @@ function choice(){
   location.href="/choice/"+enroll_id;    // 이 방식으로 전달하면 서버를 안거치므로 서버의 다른 파일들을(CSS 등)을 로드 못함
 }
 </script>
+
 
 <h1> 회원가입화면</h1>
 <table style="width:80%" >

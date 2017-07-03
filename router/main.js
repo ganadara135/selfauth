@@ -3,33 +3,96 @@ const chain = require('chain-sdk')
 const client = new chain.Client("http://220.230.112.30:1999","client:8e75bc40f75dcb82e86e852963bb47ad14e8828ce500619151ef302dcb079afc")
 //const client = new chain.Client();
 const signer = new chain.HsmSigner();
-var momentBy = require('moment');
+var bodyParser = require('body-parser');
+//var momentBy = require('moment');
 //momentBy().format();
 
-module.exports = function(app, fs)
+
+module.exports = function(app, fs, jsonParser, urlencodedParser )
 {
-  app.get('/',function(req,res){
+  app.get('/',urlencodedParser,function(req,res){
       var sess = req.session;
 
       res.render('index', {
-          title: "로그인화면",
+          title: "인덱스화면",
           length: 5,
           IDname: sess.IDname
       })
   });
 
-  app.post('/pwmanage/:IDname',function(req,res){
+  app.get('/pwmanage/:IDname',function(req,res){
       var sess = req.session;
       var userName = req.params.IDname;
       var result = [];
 
-      res.render('pwmanage', {
-          title: "하하하하하",
-          length: 5,
-          IDname: userName,
-          amount: result
-      })
-    });
+      result["대상자"] = userName;
+
+      console.log("pwmanage/:IDname/ : ", req.params.IDname);
+      var test_count = 0;
+
+      Promise.resolve().then(() =>
+          client.transactions.queryAll({
+            filter: 'outputs(account_alias=$1)',
+            filterParams: [userName],
+            startTime: (Date.now()- (60000*10*6) )  //  within a hour
+      //      setEndTime: (Date.now()) //- (60000*10*6) )
+          }, (tx, next, done) => {
+            console.log(userName + " 's transaction: " + tx.id)
+      //            console.log(userName + " 's transaction: " + tx.timestamp)
+      /*
+            tx.inputs.forEach(input => {
+              console.log('-' + input.amount + ' ' + input.assetAlias)
+            })
+      */
+            result["남은예약건수"] = tx.outputs[0].amount;
+            console.log("남은예약건수  : ", tx.outputs[0].amount)
+
+            var currentDate = new Date();
+            tx.outputs.forEach(output => {
+              //console.log('+' + output.amount + ' ' + output.assetAlias)
+              var chkDate = new Date(output.referenceData.formatDate);
+
+      //              var difMill = (currentDate.getTimezoneOffset() * 60000 )
+
+              if(chkDate.getTime() > currentDate.getTime() ){
+                test_count++;
+                console.log("test_count : ", test_count);
+                result["유효예약숫자"] = test_count;
+
+                result["formatDate["+test_count+"]"] = output.referenceData.formatDate;
+                result["purpose["+test_count+"]"] = output.referenceData.purpose;
+              }
+            })
+            next()
+      })).then(() =>{
+        if(test_count > 0) { // 에약내역 유효할때
+
+            res.render('pwmanage', {
+                title: "웹사이트 비밀번호관리",
+                length: 5,
+                IDname: userName,
+                amount: result
+            })
+          }else {       // 유효한 예약내역이 없을때
+            res.render('pwmanage_no_count', {
+                title: "예약내역 없음",
+                length: 5,
+                IDname: userName,
+                amount: result
+            })
+          }
+        }
+      ).catch(err =>
+        process.nextTick(() => {
+          console.log("err :  ", err);
+          res.render("server_error_send_to_client",{
+            title: "서버에러발생",
+         });
+           throw err })
+      )
+
+
+  });
 
   app.get('/choice/:IDname',function(req,res){
       var sess = req.session;
@@ -37,7 +100,7 @@ module.exports = function(app, fs)
       var result = [];
 
       res.render('choice', {
-          title: "하하하하하",
+          title: "선택화면",
           length: 5,
           IDname: userName,
           amount: result
@@ -192,12 +255,13 @@ console.log("choice/:IDname/ : ", req.params.IDname);
       )
   });
 
+
   app.get('/booking/:IDname',function(req,res){
       var sess = req.session;
 
       console.log("booking/ : ", req.params.IDname);
       res.render('booking', {
-          title: "MY booking",
+          title: "예약등록페이지",
           length: 5,
           IDname: req.params.IDname
       })
@@ -207,7 +271,7 @@ console.log("choice/:IDname/ : ", req.params.IDname);
       var sess = req.session;
 
       res.render('choice', {
-          title: "MY choice",
+          title: "선택페이지",
           length: 5,
           IDname: req.IDname
       })
@@ -354,20 +418,7 @@ console.log("choice/:IDname/ : ", req.params.IDname);
            throw err })
       )
   });
-// 이 부분은 삭제하라
-  app.get('/list', function (req, res) {
-   fs.readFile( __dirname + "/../data/" + "user.json", 'utf8', function (err, data) {
-       console.log( data );
-       res.end( data );
-   });
-  });
 
-  app.get('/getUser/:username', function(req, res){
-   fs.readFile( __dirname + "/../data/user.json", 'utf8', function (err, data) {
-        var users = JSON.parse(data);
-        res.json(users[req.params.username]);
-   });
-  });
 
 // 비밀번호 변경으로  활용
   app.put('/updateUser/:username', function(req, res){
@@ -423,15 +474,27 @@ console.log("choice/:IDname/ : ", req.params.IDname);
     })
   });
 
-  app.post('/login/:IDname', function(req, res){
+//  app.post('/login/:IDname',jsonParser, function(req, res){
+  app.post('/login/:IDname',urlencodedParser, function(req, res){
+//  app.post('/login',urlencodedParser, function(req, res){
         var sess;
         sess = req.session;
-//        var password = req.body["password"];
 
-        console.log("req.session  : ", req.session);
-        console.log("res.session  : ", res.session);
+
+        if (!req.body)
+          console.log("bodyParser is not working!!!!");
+
+//        var password = req.body["password"];
+//        console.log("req  : ", req);
+      //  console.log("res  : ", res);
+//        console.log("urlencodedParser  : ", urlencodedParser);
+      //  console.log("req.session  : ", req.session);
+
+        console.log("req.params.IDname  : ", req.params.IDname);
+        console.log("req.params  : ", req.params);
         console.log("req.body  : ", req.body);
-        console.log("req.body[password] : ", req.body["password"]);
+        console.log("req.body.password  : ", req.body.password);
+        console.log("req.body.IDname : ", req.body.IDname);
 
         fs.readFile(__dirname + "/../data/user.json", "utf8", function(err, data){
             var users = JSON.parse(data);
@@ -448,7 +511,7 @@ console.log("choice/:IDname/ : ", req.params.IDname);
 
             if(users[IDname]["password"] == password){
                 result["success"] = 1;
-                result["IDname"]= IDname;
+                result["IDname"]= "Successfully login";
         //        result["username"]=sess.username;
 //                res.IDname = IDname;
                 var tenMinute = 60000 * 10;
@@ -457,14 +520,14 @@ console.log("choice/:IDname/ : ", req.params.IDname);
                 //maxAge 는 expires 설정후 지난 시간을 나타냄
                 req.session.cookie.maxAge = tenMinute;
         //        sess.IDname = users[IDname]["IDname"];
-
-                res.render('choice', {
+                res.json(result);
+/*                res.redirect('choice', {
                     title: "MY HOMEPAGE",
                     length: 5,
                     IDname: req.body.IDname,
                     amount: 0
                 })
-
+*/
             }else{
                 result["success"] = 0;
                 result["error"] = "PW incorrect";
