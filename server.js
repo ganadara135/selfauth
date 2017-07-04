@@ -32,7 +32,15 @@ app.use(session({
  cookie: { maxAge: 600000 }  // 10분
 }));
 
-var router = require('./router/main')(app, fs, jsonParser, urlencodedParser);
+//agruments process
+console.log(process.argv);
+var client_token_param = process.argv[2];
+var address_param = process.argv[3];
+
+console.log('client_token_param: ' + client_token_param);
+console.log('address_param: ' + address_param);
+
+var router = require('./router/main')(app, fs, jsonParser, urlencodedParser,client_token_param,address_param);
 // or router(app, fs, jsonParser, urlencodedParser);
 
 var server = app.listen(3000, function(){

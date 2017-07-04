@@ -1,15 +1,17 @@
 //chain sdk parts
 const chain = require('chain-sdk')
-const client = new chain.Client("http://220.230.112.30:1999","client:8e75bc40f75dcb82e86e852963bb47ad14e8828ce500619151ef302dcb079afc")
-//const client = new chain.Client();
-const signer = new chain.HsmSigner();
 var bodyParser = require('body-parser');
 //var momentBy = require('moment');
 //momentBy().format();
+//const client = new chain.Client("http://220.230.112.30:1999","client:8e75bc40f75dcb82e86e852963bb47ad14e8828ce500619151ef302dcb079afc")
+//const client = new chain.Client();
+const signer = new chain.HsmSigner();
 
 
-module.exports = function(app, fs, jsonParser, urlencodedParser )
+module.exports = function(app, fs, jsonParser, urlencodedParser, client_token_arg ,address_param )
 {
+  const client = new chain.Client(address_param,client_token_arg);
+
   app.get('/',urlencodedParser,function(req,res){
       var sess = req.session;
 
