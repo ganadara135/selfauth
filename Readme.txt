@@ -5,3 +5,7 @@ tip : 실행하자마자 바로 죽는 docker container 는 docker inpect {conta
 
 2. 2017.7.3:07:50
 tip : docker logs -f { $container id }  실시간으로 터미널에 stdout 함, crtl + c   중지
+
+3. 2017.7.3:17:22
+node 웹서버 실싱행 인수로 서버주소 및 체인코어서버 접근토근 넘기게 변경 (웹호팅서버에서)
+실행방법 : docker run --name myappc -p 80:3000 myapp node server.js {서버주소} {체인코어접근토근}
