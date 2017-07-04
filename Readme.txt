@@ -8,4 +8,6 @@ tip : docker logs -f { $container id }  실시간으로 터미널에 stdout 함,
 
 3. 2017.7.3:17:22
 node 웹서버 실싱행 인수로 서버주소 및 체인코어서버 접근토근 넘기게 변경 (웹호팅서버에서)
-실행방법 : docker run --name myappc -p 80:3000 myapp node server.js {서버주소} {체인코어접근토근}
+실행방법 : docker run --name myappc -p 80:3000 myapp node server.js  {체인코어접근토근} {서버주소}
+현재체인코어접근토근 : client:515714dbc996904e87f3630f6b83cd16cb8d96fc78fe2d79206e4caa8a194f53
+서버주소 : http://220.230.112.30:1999
