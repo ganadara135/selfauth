@@ -22,9 +22,10 @@ module.exports = function(app, fs, jsonParser, urlencodedParser, client_token_ar
       })
   });
 
-  app.get('/secureNote/:IDname',function(req,res){
+  app.get('/secureNote/:IDname/:lang',function(req,res){
       var sess = req.session;
       var userName = req.params.IDname;
+      var userLang = req.params.lang;
       var result = [];
 
       result["대상자"] = userName;
@@ -65,14 +66,16 @@ module.exports = function(app, fs, jsonParser, urlencodedParser, client_token_ar
                 title: "웹사이트 비밀번호관리",
                 length: 5,
                 IDname: userName,
-                amount: result
+                amount: result,
+                lang: userLang
             })
           }else {       // 유효한 예약내역이 없을때
             res.render('pwmanage_no_count', {
                 title: "예약내역 없음",
                 length: 5,
                 IDname: userName,
-                amount: result
+                amount: result,
+                lang: userLang
             })
           }
         }
@@ -81,14 +84,16 @@ module.exports = function(app, fs, jsonParser, urlencodedParser, client_token_ar
           console.log("err :  ", err);
           res.render("server_error_send_to_client",{
             title: "서버에러발생",
+            lang: userLang
          });
            throw err })
       )
   });
 
-  app.get('/pwmanage/:IDname',function(req,res){
+  app.get('/pwmanage/:IDname/:lang',function(req,res){
       var sess = req.session;
       var userName = req.params.IDname;
+      var userLang = req.params.lang;
       var result = [];
 
       result["대상자"] = userName;
@@ -137,14 +142,16 @@ module.exports = function(app, fs, jsonParser, urlencodedParser, client_token_ar
                 title: "웹사이트 비밀번호관리",
                 length: 5,
                 IDname: userName,
-                amount: result
+                amount: result,
+                lang: userLang
             })
           }else {       // 유효한 예약내역이 없을때
             res.render('pwmanage_no_count', {
                 title: "예약내역 없음",
                 length: 5,
                 IDname: userName,
-                amount: result
+                amount: result,
+                lang: userLang
             })
           }
         }
@@ -153,6 +160,7 @@ module.exports = function(app, fs, jsonParser, urlencodedParser, client_token_ar
           console.log("err :  ", err);
           res.render("server_error_send_to_client",{
             title: "서버에러발생",
+            lang: userLang
          });
            throw err })
       )
@@ -242,9 +250,10 @@ module.exports = function(app, fs, jsonParser, urlencodedParser, client_token_ar
       )
   });
 
-  app.post('/bookingUse/:IDname',function(req,res){
+  app.post('/bookingUse/:IDname/',function(req,res){
       var sess = req.session;
       var username = req.params.IDname;
+//      var userLang = req.params.lang;
       var userXpub = req.body.xpub;
       var bbookingTime = req.body.bookingTime;
       var bbpurpose    = req.body.purpose;
@@ -296,14 +305,15 @@ module.exports = function(app, fs, jsonParser, urlencodedParser, client_token_ar
   });
 
 
-  app.get('/booking/:IDname',function(req,res){
+  app.get('/booking/:IDname/:lang',function(req,res){
       var sess = req.session;
 
       console.log("booking/ : ", req.params.IDname);
       res.render('booking', {
           title: "예약등록페이지",
           length: 5,
-          IDname: req.params.IDname
+          IDname: req.params.IDname,
+          lang: req.params.lang
       })
   });
 

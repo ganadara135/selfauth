@@ -186,21 +186,21 @@
     <% if(IDname){ %>
         <h2>Welcome! <%= IDname %> <%= amount %> </h2>
 
-        <h2> 계정비밀번호관리 </h2>
+        <h2 data-langNum="0"> 계정비밀번호관리 </h2>
         <table border='1'>
 
-          <tr ><td colspan="2">현재사이트주소</td></tr>
+          <tr ><td colspan="2" data-langNum="1">현재사이트주소</td></tr>
           <tr ><td colspan='2'><input type="text" id="currentSite" ></td></tr>
-          <tr ><td colspan='2'>사이트주소입력 및 등록여부</td></tr>
+          <tr ><td colspan='2' data-langNum="2">사이트주소입력 및 등록여부</td></tr>
           <tr ><td colspan='2'><input type="text" id="enrollSite" ></td></tr>
           <tr> <td>ID</td>  <td><input type="text" id="siteID" ></td></tr>
           <tr> <td>PW</td>  <td><input type="text" id="sitePW" ></td></tr>
-          <tr ><td colspan='2'><input type="button" id="enrollButton" onclick="storeUserData()" value="등록/변경"></td>
-            <input type="button" id="deleteButton" onclick="delUserData()" value="삭제">
-            <input type="button" value='나가기' id="goToChoiceId" onclick="goToChoice()"></tr>
+          <tr ><td colspan='2'><input type="button" id="enrollButton" onclick="storeUserData()" value="등록/변경" data-langNum="3">
+            <input type="button" id="deleteButton" onclick="delUserData()" value="삭제" data-langNum="4">
+            <input type="button" value='나가기' id="goToChoiceId" onclick="goToChoice()" data-langNum="5"></td></tr>
         </table>
         <fieldset>
-          <legend>등록된계정</legend>
+          <legend data-langNum="6">등록된계정</legend>
           <tableTag id="tableTag">  </tableTag>
         </fieldset>
 
@@ -209,4 +209,55 @@
         <h2> Please Login. pwmanage.ejs 페이지 </h2>
     <% } %>
   </body>
+  <script>
+  // 언어팩 선언.
+  $.lang = {};
+
+  $.lang.ko = {
+      0: '계정비밀번호관리',
+      1: '현재사이트주소',
+      2: '사이트주소입력 및 등록여부',
+      3: '등록/변경',
+      4: '삭제',
+      5: '나가기',
+      6: '등록된계정',
+  };
+
+  $.lang.en = {
+    0: 'PW Management',
+    1: 'Current Site URL',
+    2: 'Input Site URL / Check Inputed',
+    3: 'Enroll/Edit',
+    4: 'Del',
+    5: 'Leave',
+    6: 'Enrolled Account',
+  };
+
+
+  /**
+  * setLanguage
+  * use $.lang[currentLanguage][languageNumber]
+  */
+  function setLanguage(currentLanguage) {
+    console.log('setLanguage', arguments);
+
+    $('[data-langNum]').each(function() {
+      var $this = $(this);
+      $this.html($.lang[currentLanguage][$this.data('langnum')]);
+    });
+
+    $('[data-langNum]').each(function() {
+      var $this = $(this);
+      $this.val($.lang[currentLanguage][$this.data('langnum')]);
+    });
+  }
+
+  // 언어 변경
+  //$('button').click(function() {
+
+  var lang = "<%= lang %>";
+  if(lang != null)
+    setLanguage(lang);
+
+  </script>
 </html>

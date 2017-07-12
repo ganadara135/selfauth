@@ -26,7 +26,7 @@
           if(note !== null){
             document.getElementById("secureNote").value = note;
           }else{
-            document.getElementById("secureNote").value = "저장되어있는 비밀노트가 없습니다.";
+            document.getElementById("secureNote").value = "Any data on your Note.";
           }
 
       }else {
@@ -38,7 +38,7 @@
 
       // Check browser support
       if (typeof(Storage) !== "undefined") {
-          alert(document.getElementById("secureNote").value + "저장하였습니다.")
+          alert(document.getElementById("secureNote").value + "Stored.")
           localStorage.setItem("mySecureNote", JSON.stringify(document.getElementById("secureNote").value));
           document.getElementById("secureNote").value = "";
       } else {
@@ -48,7 +48,8 @@
 
     function goToChoice(){
       var userName = "<%= IDname %>";
-      location.href="/choice/"+userName;
+      var userLang = "<%= lang %>";
+      location.href="/choice/"+userName +"/"+userLang;
     }
     function logout(){
       location.href="/logout";
@@ -62,7 +63,7 @@
         <tableTag id="tableTag">  </tableTag>
         <fieldset>
           <legend>비밀노트장</legend>
-          <textarea name="secureNote" id="secureNote" rows="30" cols="30">Typing here what you want to save securely</textarea>
+          <textarea name="secureNote" id="secureNote" rows="10" cols="30">Typing here what you want to save securely</textarea>
           <input type="button" id="storeButton" onclick="storeUserData()" value="저장/변경">
           <input type="button" value='나가기' id="goToChoiceId" onclick="goToChoice()"></tr>
         </fieldset>
@@ -73,4 +74,48 @@
         <h2> Please Login. secureNote.ejs 페이지 </h2>
     <% } %>
   </body>
+
+  <script>
+  // 언어팩 선언.
+  $.lang = {};
+
+  $.lang.ko = {
+      0: '비밀노트장',
+      1: '저장/변경',
+      2: '나가기',
+  };
+
+  $.lang.en = {
+    0: 'Secret Note',
+    1: 'Store/Edit',
+    2: 'Leave',
+  };
+
+
+  /**
+  * setLanguage
+  * use $.lang[currentLanguage][languageNumber]
+  */
+  function setLanguage(currentLanguage) {
+    console.log('setLanguage', arguments);
+
+    $('[data-langNum]').each(function() {
+      var $this = $(this);
+      $this.html($.lang[currentLanguage][$this.data('langnum')]);
+    });
+
+    $('[data-langNum]').each(function() {
+      var $this = $(this);
+      $this.val($.lang[currentLanguage][$this.data('langnum')]);
+    });
+  }
+
+  // 언어 변경
+  //$('button').click(function() {
+
+  var lang = "<%= lang %>";
+  if(lang != null)
+    setLanguage(lang);
+
+  </script>
 </html>

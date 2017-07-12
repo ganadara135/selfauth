@@ -82,9 +82,9 @@
       var oneHour = 60000 * 10 * 6;
 
       if(bookingDate.getTime() >= currentDate.getTime() + oneHour){
-        alert("정상처리"  + bookingDate.toISOString() +" / " + bookingDate.getTime());
+        alert("VALIDITY"  + bookingDate.toISOString() +" / " + bookingDate.getTime());
       }else{
-        alert("비정상처리");
+        alert("UNVALIDITY");
         return false;
       }
 
@@ -123,26 +123,27 @@
 
     function goToChoice(){
       var userName = "<%= IDname %>";
-      location.href="/choice/"+userName;
+      var userLang = "<%= lang %>";
+      location.href="/choice/"+userName +"/"+userLang;
     }
     </script>
   </head>
   <body onload="startTime()">
       <form method="post">
         <fieldset>
-          사용일시 (현재시간: <divTime id="clock"></divTime>)<br>
+          <ml data-langNum="0"> 사용일시 </ml> ( <ml data-langNum="1"> 현재시간: </ml> <divTime id="clock"></divTime>)<br>
           <input type="date" name="bday" id="bday" max=""  required>
           <input type="time" name="btime" id="btime" required><br>
-          사용용도<br>
+          <h4 data-langNum="2">사용용도</h4><br>
           <input type="text" name="purpose" id="bpurpose"><br>
 
           <fieldset>
-            <legend>비밀키 입력</legend>
+            <legend data-langNum="3">비밀키 입력</legend>
             <input type="text" id="userXpub" >
-            <input type="button" value="입력" onclick="setXpub()"><br>
+            <input type="button" value="입력" onclick="setXpub()" data-langNum="4"><br>
           </fieldset>
-        <input type="button" value='예약등록 버튼' id="bookingButton" onclick="bookingUse()">
-        <input type="button" value='나가기' id="goToChoiceId" onclick="goToChoice()">
+        <input type="button" value='예약등록 버튼' id="bookingButton" onclick="bookingUse()" data-langNum="5">
+        <input type="button" value='나가기' id="goToChoiceId" onclick="goToChoice()" data-langNum="6">
         </fieldset>
       </form>
 
@@ -158,4 +159,56 @@
 
 
   </body>
+
+  <script>
+  // 언어팩 선언.
+  $.lang = {};
+
+  $.lang.ko = {
+      0: '사용일시',
+      1: '현재시간',
+      2: '사용용도',
+      3: '비밀키 입력',
+      4: '입력',
+      5: '예약등록 버튼',
+      6: '나가기'
+  };
+
+  $.lang.en = {
+    0: 'Date for use',
+    1: 'Current Time',
+    2: 'Purpose for Use',
+    3: 'Input privateKey',
+    4: 'Input',
+    5: 'Enroll Reservation',
+    6: 'Leave'
+  };
+
+
+  /**
+  * setLanguage
+  * use $.lang[currentLanguage][languageNumber]
+  */
+  function setLanguage(currentLanguage) {
+    console.log('setLanguage', arguments);
+
+    $('[data-langNum]').each(function() {
+      var $this = $(this);
+      $this.html($.lang[currentLanguage][$this.data('langnum')]);
+    });
+
+    $('[data-langNum]').each(function() {
+      var $this = $(this);
+      $this.val($.lang[currentLanguage][$this.data('langnum')]);
+    });
+  }
+
+  // 언어 변경
+  //$('button').click(function() {
+
+  var lang = "<%= lang %>";
+  if(lang != null)
+    setLanguage(lang);
+
+  </script>
 </html>
