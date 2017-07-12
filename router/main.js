@@ -160,16 +160,18 @@ module.exports = function(app, fs, jsonParser, urlencodedParser, client_token_ar
 
   });
 
-  app.get('/choice/:IDname',function(req,res){
+  app.get('/choice/:IDname/:lang',function(req,res){
       var sess = req.session;
       var userName = req.params.IDname;
+      var userLang = req.params.lang;
       var result = [];
 
       res.render('choice', {
           title: "선택화면",
           length: 5,
           IDname: userName,
-          amount: result
+          amount: result,
+          lang: userLang
       })
     });
 
@@ -239,35 +241,7 @@ module.exports = function(app, fs, jsonParser, urlencodedParser, client_token_ar
            throw err })
       )
   });
-/*
-  app.get('/choice/:IDname',function(req,res){
-      var sess = req.session;
-      var username = req.params.IDname;
 
-console.log("choice/:IDname/ : ", req.params.IDname);
-
-      Promise.resolve().then(() =>
-        client.mockHsm.keys.query({aliases: [username]}).then(data => {
-
-        console.log("--------------------keys.query()   /   비밀키 찾는 쿼리------------------------")
-        //  console.log(data)
-        console.log(data.items)
-
-//        xpub = data.items[0].xpub
-      })).then(() =>
-        res.render('choice', {
-            title: "MY choice",
-            length: 5,
-            IDname: req.params.IDname
-        })
-      ).catch(err =>
-        process.nextTick(() => {
-          console.log("err :  ", err);
-          res.json("에러");
-           throw err })
-      )
-  });
-*/
   app.post('/bookingUse/:IDname',function(req,res){
       var sess = req.session;
       var username = req.params.IDname;
@@ -345,13 +319,14 @@ console.log("choice/:IDname/ : ", req.params.IDname);
 
 
 
-  app.get('/enroll',function(req,res){
+  app.get('/enroll/:lang',function(req,res){
       var sess = req.session;
 
       res.render('enroll', {
           title: "Enrollment",
           length: 5,
-          IDname: sess.IDname
+          IDname: sess.IDname,
+          lang: req.params.lang
       })
   });
   // XMLHttpRequest communication
@@ -549,12 +524,6 @@ console.log("choice/:IDname/ : ", req.params.IDname);
 
         if (!req.body)
           console.log("bodyParser is not working!!!!");
-
-//        var password = req.body["password"];
-//        console.log("req  : ", req);
-      //  console.log("res  : ", res);
-//        console.log("urlencodedParser  : ", urlencodedParser);
-      //  console.log("req.session  : ", req.session);
 
         console.log("req.params.IDname  : ", req.params.IDname);
         console.log("req.params  : ", req.params);

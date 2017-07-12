@@ -51,17 +51,17 @@ th, td {
     function manageWebPW(){
       location.href="/pwmanage/"+ "<%= IDname %>";
     }
-    
+
     function manageNote(){
       location.href="/secureNote/"+ "<%= IDname %>";
     }
 
     function manageBitcoinW(){
-      alert("서비스준비중입니다.")
+      alert("Under Construction.")
     }
 
     function managePrivateKey(){
-      alert("서비스준비중입니다.")
+      alert("Under Construction.")
     }
     function logout(){
       location.href="/logout";
@@ -70,20 +70,72 @@ th, td {
 </head>
 
     <% if(IDname){ %>
-        <h2>Welcome! <%= IDname %> <%= amount %> </h2>
+        <h2>Welcome! <%= IDname %> <%= amount %>  <%= lang %> </h2>
         <tmpTag2 id="tmpTag2">  </tmpTag2><br>
-        <button  onclick="watching()"> 사용내역확인 </button><br>
-        <button  onclick="booking()" >사용예약등록</button><br>
+        <button  onclick="watching()" data-langNum="0"> 사용내역확인 </button><br>
+        <button  onclick="booking()" data-langNum="1">사용예약등록</button><br>
 
         <fieldset>
-          <legend>가능한 서비스</legend>
-          <button  onclick="manageWebPW()">웹사이트 계정관리</button><br>
-          <button  onclick="manageNote()">비밀메모장</button><br>
-          <button  onclick="manageBitcoinW()">비트코인 지갑관리</button><br>
-          <button  onclick="managePrivateKey()">비밀키 접근관리</button><br>
+          <legend data-langNum="2">가능한 서비스</legend>
+          <button  onclick="manageWebPW()" data-langNum="3">웹사이트 계정관리</button><br>
+          <button  onclick="manageNote()" data-langNum="4">비밀메모장</button><br>
+          <button  onclick="manageBitcoinW()" data-langNum="5">비트코인 지갑관리</button><br>
+          <button  onclick="managePrivateKey()" data-langNum="6">비밀키 접근관리</button><br>
         </fieldset>
         <br>
-        <button  onclick="logout()">logout</button><br>
+        <button  onclick="logout()">Logout</button><br>
     <% }else{ %>
         <h2> Please Login. choice.ejs 페이지 </h2>
     <% } %>
+
+<script>
+// 언어팩 선언.
+$.lang = {};
+
+$.lang.ko = {
+    0: '사용내역확인',
+    1: '사용예약등록',
+    2: '가능한 서비스',
+    3: '웹사이트 계정관리',
+    4: '비밀메모장',
+    5: '비트코인 지갑관리',
+    6: '비밀키 접근관리'
+};
+
+$.lang.en = {
+  0: 'Used Booking Records',
+  1: 'to make Booking',
+  2: 'Available Service',
+  3: 'to manage Website Accounts',
+  4: 'Secured Note',
+  5: 'manage Bitcoin Wallet',
+  6: 'manage privateKey'
+};
+
+
+/**
+* setLanguage
+* use $.lang[currentLanguage][languageNumber]
+*/
+function setLanguage(currentLanguage) {
+  console.log('setLanguage', arguments);
+
+  $('[data-langNum]').each(function() {
+    var $this = $(this);
+    $this.html($.lang[currentLanguage][$this.data('langnum')]);
+  });
+
+  $('[data-langNum]').each(function() {
+    var $this = $(this);
+    $this.val($.lang[currentLanguage][$this.data('langnum')]);
+  });
+}
+
+// 언어 변경
+//$('button').click(function() {
+
+var lang = "<%= lang %>";
+if(lang != null)
+  setLanguage(lang);
+
+</script>

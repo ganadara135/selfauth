@@ -22,14 +22,14 @@ th, td {
 
 <script>
 $(document).ready(function(){
-   $("#IDenroll").val("아이디를 입력해주세요");
+   $("#IDenroll").val("Please input your ID");
 //   $("#lpassword").val("비밀번호를 입력해주세요");
    $("#IDenroll").focus(function(){
       $("#IDenroll").val("");
    })
    $("#IDenroll").focusout(function(){
       if($("#IDenroll").val().length==0){
-         $("#IDenroll").val("아이디를 입력해주세요");
+         $("#IDenroll").val("Please input your ID");
       }
    })
 });
@@ -110,32 +110,90 @@ function choice(){
 </script>
 
 
-<h1> 회원가입화면</h1>
+<h1 data-langNum="0"> 회원가입화면</h1>
 <table style="width:80%" >
-  <caption>- 계정생성 -</caption>
+  <caption data-langNum="1">- 계정생성 -</caption>
   <tr>
-    <td>아  이  디:</td>
+    <td data-langNum="2">아  이  디:</td>
     <th><input type=text id=IDenroll></th>
   </tr>
   <tr>
-    <td>비 밀 번 호:</td>
+    <td data-langNum="3">비 밀 번 호:</td>
     <td><input type=password id=IDpassword></td>
   </tr>
   <tr>
-    <td>비밀번호확인:</td>
+    <td data-langNum="4">비밀번호확인:</td>
     <td><input type=password id=IDpassword2 ></td>
   </tr>
   <tr>
-    <td>  <button  onclick='checkID()'>중복체크</button></td>
-    <td>  <tmpTag1>아이디 중복체크결과 : </tmpTag1> </td>
+    <td>  <button  onclick='checkID()' data-langNum="5">중복체크</button></td>
+    <td>  <tmpTag1 data-langNum="6">아이디 중복체크결과 : </tmpTag1> </td>
   </tr>
   <tr>
-    <td> <button id="createKeyButton" onClick="createKeyAssetAccout()" disabled=true> 비밀키 생성 </button></td>
-    <td> 비밀키 생성결과 :  <tmpTag2>  </tmpTag2> </td>
+    <td> <button id="createKeyButton" onClick="createKeyAssetAccout()" disabled=true data-langNum="7"> 비밀키 생성 </button></td>
+    <td data-langNum="8"> 비밀키 생성결과 :  <tmpTag2>  </tmpTag2> </td>
   </tr>
-  <tr><td colspan="2"><button id="competeEnroll" onclick="choice()" disabled=true> 완료 </button></td>
+  <tr><td colspan="2"><button id="competeEnroll" onclick="choice()" disabled=true data-langNum="9"> 완료 </button></td>
   </tr>
 </table>
 
 
-<h2>Welcome! <%= IDname %>  </h2>
+<h2>Welcome! <%= IDname %> <%= lang %>  </h2>
+
+<script>
+// 언어팩 선언.
+$.lang = {};
+
+$.lang.ko = {
+    0: '회원가입화면',
+  1: '계정생성',
+  2: '아  이  디:',
+  3: '비 밀 번 호:',
+  4: '비밀번호확인:',
+  5: '중복체크',
+  6: '아이디 중복체크결과 :',
+  7: '비밀키 생성',
+  8: '비밀키 생성결과 :',
+  9: '완료',
+};
+
+$.lang.en = {
+  0: 'Enrollment Page',
+  1: 'Create Account',
+  2: 'I  D :',
+  3: 'P  W :',
+  4: 'P  W again:',
+  5: 'ID double check',
+  6: 'ID double check result :',
+  7: 'Create privateKey',
+  8: 'Created Result :',
+  9: 'Complete',
+};
+
+
+/**
+* setLanguage
+* use $.lang[currentLanguage][languageNumber]
+*/
+function setLanguage(currentLanguage) {
+  console.log('setLanguage', arguments);
+
+  $('[data-langNum]').each(function() {
+    var $this = $(this);
+    $this.html($.lang[currentLanguage][$this.data('langnum')]);
+  });
+
+  $('[data-langNum]').each(function() {
+    var $this = $(this);
+    $this.val($.lang[currentLanguage][$this.data('langnum')]);
+  });
+}
+
+// 언어 변경
+//$('button').click(function() {
+
+var lang = "<%= lang %>";
+if(lang != null)
+  setLanguage(lang);
+
+</script>

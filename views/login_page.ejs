@@ -1,16 +1,17 @@
 <script>
 $(document).ready(function(){
-   $("#IDname").val("아이디를 입력해주세요");
+   $("#IDname").val("Please input your ID");
 //   $("#lpassword").val("비밀번호를 입력해주세요");
    $("#IDname").focus(function(){
       $("#IDname").val("");
    })
    $("#IDname").focusout(function(){
       if($("#IDname").val().length==0){
-         $("#IDname").val("아이디를 입력해주세요");
+         $("#IDname").val("Please input your ID");
       }
    })
 })
+
 </script>
 <script>
   function login(){
@@ -43,7 +44,7 @@ $(document).ready(function(){
 
         $("responsePanel").append(JSON.parse(this.responseText).error);
         if( JSON.parse(this.responseText).success == 1)
-          location.href="/choice/"+login_id;
+          location.href="/choice/"+login_id+"/"+global_lang_val;
       }
     }
 
@@ -54,12 +55,17 @@ $(document).ready(function(){
   };
 
   function enroll(){
-    location.href="/enroll";
+//    var lang = $(this).data('lang');
+    alert("global_lang_val ::::  " + global_lang_val)
+
+    location.href="/enroll/"+global_lang_val;
   };
 </script>
 
 
-<h1>셀프인증시스템</h1>
+
+
+<h1 data-langNum="1">셀프인증시스템</h1>
 
 <h2>
   <responsePanel>
@@ -67,12 +73,83 @@ $(document).ready(function(){
 </h2>
 
 <section>
-아 이 디 <br>
+<h4 data-langNum="2">아 이 디 </h4> <br>
 <input type="text" name="IDname" id="IDname"><br>
-비밀번호 <br>
+<h4 data-langNum="3">비밀번호</h4> <br>
 <input type="password" name="password" id="password"><br><br>
-<input type=button value='로그인' onclick='return login();'><br><br>
+<input type=button value='로그인' onclick='return login();' data-langNum="4"><br><br>
 </section>
-<button type="button">지문인식(미작동)</button><br>
+<button data-langNum="5">지문인식(미작동)</button><br>
 
-<button type="button" onclick="enroll()">회원가입</button><br>
+<button  onclick="enroll()" data-langNum="6">회원가입</button><br>
+
+<div id="wrap">
+    <h1 data-langNum="0">자바스크립트 다국어 처리</h1>
+    <button data-lang="ko" class="multiLang">한국어</button>
+    <button data-lang="en" class="multiLang">English</button>
+    <hr>
+</div>
+
+<script>
+var global_lang_val;
+// 언어팩 선언.
+$.lang = {};
+
+$.lang.ko = {
+    0: '자바스크립트 다국어 처리.',
+  1: '셀프인증시스템',
+  2: '아이디',
+  3: '비밀번호',
+  4: '로그인',
+  5: '지문인식(미작동)',
+  6: '회원가입'
+};
+
+$.lang.en = {
+    0: 'Javascript Language Localization.',
+  1: 'Self-Authentication-System',
+  2: 'ID',
+  3: 'PW',
+  4: 'Login',
+  5: 'FingerScan(No Operation)',
+  6: 'Enrollment'
+};
+
+
+/**
+* setLanguage
+* use $.lang[currentLanguage][languageNumber]
+*/
+function setLanguage(currentLanguage) {
+  console.log('setLanguage', arguments);
+
+  $('[data-langNum]').each(function() {
+    var $this = $(this);
+    $this.html($.lang[currentLanguage][$this.data('langnum')]);
+  });
+
+  $('[data-langNum]').each(function() {
+    var $this = $(this);
+    $this.val($.lang[currentLanguage][$this.data('langnum')]);
+  });
+}
+
+// 언어 변경
+//$('button').click(function() {
+
+$('.multiLang').click(function() {
+  alert("Language switching");
+  var lang = $(this).data('lang');
+  global_lang_val = lang;
+  setLanguage(lang);
+});
+
+
+/*
+추가적으로 유용한 처리.
+1. 브라우저 언어에 따라 최초 언어 셋팅하기
+2. 외부에서 URL ?lang=ja 접근시 셋팅하기
+3. 언어 변경시 쿠키에 언어코드 저장해서 재접속시 쿠키 기준으로 언어 셋팅.
+*/
+
+</script>
