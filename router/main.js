@@ -22,6 +22,70 @@ module.exports = function(app, fs, jsonParser, urlencodedParser, client_token_ar
       })
   });
 
+  app.get('/secureNote/:IDname',function(req,res){
+      var sess = req.session;
+      var userName = req.params.IDname;
+      var result = [];
+
+      result["대상자"] = userName;
+
+      console.log("secureNote/:IDname/ : ", req.params.IDname);
+      var test_count = 0;
+
+      Promise.resolve().then(() =>
+          client.transactions.queryAll({
+            filter: 'outputs(account_alias=$1)',
+            filterParams: [userName],
+            startTime: (Date.now()- (60000*10*6) )  //  within a hour
+      //      setEndTime: (Date.now()) //- (60000*10*6) )
+          }, (tx, next, done) => {
+            console.log(userName + " 's transaction: " + tx.id)
+      //            console.log(userName + " 's transaction: " + tx.timestamp)
+      /*
+            tx.inputs.forEach(input => {
+              console.log('-' + input.amount + ' ' + input.assetAlias)
+            })
+      */
+
+            var currentDate = new Date();
+            tx.outputs.forEach(output => {
+
+              var chkDate = new Date(output.referenceData.formatDate);
+
+              if(chkDate.getTime() > currentDate.getTime() ){
+                test_count++;
+                console.log("test_count : ", test_count);
+              }
+            })
+            next()
+      })).then(() =>{
+        if(test_count > 0) { // 에약내역 유효할때
+
+            res.render('secureNote', {
+                title: "웹사이트 비밀번호관리",
+                length: 5,
+                IDname: userName,
+                amount: result
+            })
+          }else {       // 유효한 예약내역이 없을때
+            res.render('pwmanage_no_count', {
+                title: "예약내역 없음",
+                length: 5,
+                IDname: userName,
+                amount: result
+            })
+          }
+        }
+      ).catch(err =>
+        process.nextTick(() => {
+          console.log("err :  ", err);
+          res.render("server_error_send_to_client",{
+            title: "서버에러발생",
+         });
+           throw err })
+      )
+  });
+
   app.get('/pwmanage/:IDname',function(req,res){
       var sess = req.session;
       var userName = req.params.IDname;
@@ -150,7 +214,7 @@ module.exports = function(app, fs, jsonParser, urlencodedParser, client_token_ar
                 console.log("test_count : ", test_count);
                 result["유효예약숫자"] = test_count;
 
-                result["formatDate["+test_count+"]"] = output.referenceData.formatDate;
+                result["formatDate["+test_count+"(UTC+09:00)]"] = output.referenceData.formatDate;
                 result["purpose["+test_count+"]"] = output.referenceData.purpose;
 
 //                return done();
@@ -171,7 +235,7 @@ module.exports = function(app, fs, jsonParser, urlencodedParser, client_token_ar
       ).catch(err =>
         process.nextTick(() => {
           console.log("err :  ", err);
-          res.json("에러");
+          res.json("서버에러");
            throw err })
       )
   });

@@ -51,12 +51,15 @@ th, td {
     function manageWebPW(){
       location.href="/pwmanage/"+ "<%= IDname %>";
     }
+    
+    function manageNote(){
+      location.href="/secureNote/"+ "<%= IDname %>";
+    }
+
     function manageBitcoinW(){
       alert("서비스준비중입니다.")
     }
-    function manageAccessC(){
-      alert("서비스준비중입니다.")
-    }
+
     function managePrivateKey(){
       alert("서비스준비중입니다.")
     }
@@ -75,8 +78,8 @@ th, td {
         <fieldset>
           <legend>가능한 서비스</legend>
           <button  onclick="manageWebPW()">웹사이트 계정관리</button><br>
+          <button  onclick="manageNote()">비밀메모장</button><br>
           <button  onclick="manageBitcoinW()">비트코인 지갑관리</button><br>
-          <button  onclick="manageAccessC()">중요파일 접근관리</button><br>
           <button  onclick="managePrivateKey()">비밀키 접근관리</button><br>
         </fieldset>
         <br>

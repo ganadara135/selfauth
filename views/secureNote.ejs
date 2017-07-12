@@ -1,0 +1,76 @@
+<html>
+  <head>
+  <style>
+  body{
+      background-color: black;
+      border-color: white;
+      color: white;
+  }
+
+  table, th, td {
+      border: 1px solid white;
+      border-collapse: collapse;
+  }
+  th, td {
+      padding: 5px;
+      text-align: center;
+  }
+  </style>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.3/jquery.min.js"></script>
+
+    <script>
+    $(document).ready(function(){
+
+      if (typeof(Storage) !== "undefined") {
+          var note = JSON.parse(localStorage.getItem("mySecureNote"));
+          if(note !== null){
+            document.getElementById("secureNote").value = note;
+          }else{
+            document.getElementById("secureNote").value = "저장되어있는 비밀노트가 없습니다.";
+          }
+
+      }else {
+          document.getElementById("tableTag").innerHTML = "Sorry, your browser does not support Web Storage...";
+      }
+    });
+
+    function storeUserData(){
+
+      // Check browser support
+      if (typeof(Storage) !== "undefined") {
+          alert(document.getElementById("secureNote").value + "저장하였습니다.")
+          localStorage.setItem("mySecureNote", JSON.stringify(document.getElementById("secureNote").value));
+          document.getElementById("secureNote").value = "";
+      } else {
+          document.getElementById("tableTag").innerHTML = "Sorry, your browser does not support Web Storage...";
+      }
+    }
+
+    function goToChoice(){
+      var userName = "<%= IDname %>";
+      location.href="/choice/"+userName;
+    }
+    function logout(){
+      location.href="/logout";
+    }
+    </script>
+  </head>
+  <body>
+    <% if(IDname){ %>
+        <h2>Welcome! <%= IDname %> <%= amount %> </h2>
+
+        <tableTag id="tableTag">  </tableTag>
+        <fieldset>
+          <legend>비밀노트장</legend>
+          <textarea name="secureNote" id="secureNote" rows="30" cols="30">Typing here what you want to save securely</textarea>
+          <input type="button" id="storeButton" onclick="storeUserData()" value="저장/변경">
+          <input type="button" value='나가기' id="goToChoiceId" onclick="goToChoice()"></tr>
+        </fieldset>
+
+
+        <button  onclick="logout()">logout</button><br>
+    <% }else{ %>
+        <h2> Please Login. secureNote.ejs 페이지 </h2>
+    <% } %>
+  </body>
+</html>
