@@ -60,6 +60,10 @@ $(document).ready(function(){
 
     location.href="/enroll/"+global_lang_val;
   };
+
+  function manageFingerScan(){
+    alert("Under Construction.")
+  }
 </script>
 
 
@@ -79,7 +83,7 @@ $(document).ready(function(){
 <input type="password" name="password" id="password"><br><br>
 <input type=button value='로그인' onclick='return login();' data-langNum="4"><br><br>
 </section>
-<button data-langNum="5">지문인식(미작동)</button><br>
+<button onclick="manageFingerScan()" data-langNum="5">지문인식</button><br>
 
 <button  onclick="enroll()" data-langNum="6">회원가입</button><br>
 
@@ -97,22 +101,22 @@ $.lang = {};
 
 $.lang.ko = {
     0: '자바스크립트 다국어 처리.',
-  1: '셀프인증시스템',
-  2: '아이디',
-  3: '비밀번호',
-  4: '로그인',
-  5: '지문인식(미작동)',
-  6: '회원가입'
+    1: '셀프인증시스템',
+    2: '아이디',
+    3: '비밀번호',
+    4: '로그인',
+    5: '지문인식(미작동)',
+    6: '회원가입'
 };
 
 $.lang.en = {
     0: 'Javascript Language Localization.',
-  1: 'Self-Authentication-System',
-  2: 'ID',
-  3: 'PW',
-  4: 'Login',
-  5: 'FingerScan(No Operation)',
-  6: 'Enrollment'
+    1: 'Self-Authentication-System',
+    2: 'ID',
+    3: 'PW',
+    4: 'Login',
+    5: 'FingerScan',
+    6: 'Sign Up'
 };
 
 

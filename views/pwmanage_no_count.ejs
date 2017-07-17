@@ -4,12 +4,12 @@
     <script>
     function goToChoice(){
       var userName = "<%= IDname %>";
-      location.href="/choice/"+userName;
+      location.href="/choice/"+userName +"/"+ "<%= lang %>";;
     }
     </script>
   </head>
   <body>
-    <h1> 유효한 예약내역이 없습니다. </h1>
+    <h1> There are no able records. </h1>
     <input type="button" value='나가기' id="goToChoiceId" onclick="goToChoice()"></td></tr>
   </body>
 </html>
