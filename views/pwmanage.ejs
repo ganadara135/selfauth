@@ -175,7 +175,7 @@
 
     function goToChoice(){
       var userName = "<%= IDname %>";
-      location.href="/choice/"+userName;
+      location.href="/choice/"+userName +"/"+ "<%= lang %>";
     }
     function logout(){
       location.href="/logout";

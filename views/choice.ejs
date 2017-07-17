@@ -56,8 +56,57 @@ th, td {
       location.href="/secureNote/"+ "<%= IDname %>"+"/"+ "<%= lang %>";
     }
 
-    function manageBitcoinW(){
-      alert("Under Construction.")
+    // Create the XHR object.
+    function createCORSRequest(method, url) {
+      var xhr = new XMLHttpRequest();
+      if ("withCredentials" in xhr) {
+//      if (xhr) {
+        // XHR for Chrome/Firefox/Opera/Safari.
+        xhr.open(method, url, true);
+      } else if (typeof XDomainRequest != "undefined") {
+        // XDomainRequest for IE.
+        xhr = new XDomainRequest();
+        xhr.open(method, url);
+      } else {
+        // CORS not supported.
+        xhr = null;
+      }
+      return xhr;
+    }
+
+    // Make the actual CORS request.
+    function makeCorsRequest(url_R) {
+      // This is a sample server that supports CORS.
+//      var url = 'http://html5rocks-cors.s3-website-us-east-1.amazonaws.com/index.html';
+      var url = url_R;
+
+      var xhr = createCORSRequest('GET', url);
+      if (!xhr) {
+        alert('CORS not supported');
+        return;
+      }
+
+      // Response handlers.
+      xhr.onload = function() {
+        var text = xhr.responseText;
+//        var title = getTitle(text);
+//        alert('Response from CORS request to ' + text);// + ': ' + title);
+        document.getElementById("tmpTag2").innerHTML = text;
+      };
+
+      xhr.onerror = function() {
+        alert('Woops, there was an error making the request.');
+      };
+
+      xhr.send();
+    }
+
+    function BitcoinBalanceCheck(){
+      var invocation = new XMLHttpRequest();
+      var url = 'https://blockchain.info/ko/balance?active=1MjgTF2seggBa8cztpkW6kwxQvPKiCTZn1&cors=true';  //&cors=true     이게 핵심
+      //var xmlhttp = new XMLHttpRequest();
+
+      makeCorsRequest(url);
     }
 
     function managePrivateKey(){
@@ -79,7 +128,7 @@ th, td {
           <legend data-langNum="2">가능한 서비스</legend>
           <button  onclick="manageWebPW()" data-langNum="3">웹사이트 계정관리</button><br>
           <button  onclick="manageNote()" data-langNum="4">비밀메모장</button><br>
-          <button  onclick="manageBitcoinW()" data-langNum="5">비트코인 지갑관리</button><br>
+          <button  onclick="BitcoinBalanceCheck()" data-langNum="5">비트코인 밸런스체크</button><br>
           <button  onclick="managePrivateKey()" data-langNum="6">비밀키 접근관리</button><br>
         </fieldset>
         <br>
@@ -98,7 +147,7 @@ $.lang.ko = {
     2: '가능한 서비스',
     3: '웹사이트 계정관리',
     4: '비밀메모장',
-    5: '비트코인 지갑관리',
+    5: '비트코인 밸런스체크',
     6: '비밀키 접근관리'
 };
 
@@ -108,7 +157,7 @@ $.lang.en = {
     2: 'Available Services',
     3: 'Managing Website Accounts',
     4: 'Secured Note',
-    5: 'Managing Bitcoin Wallet',
+    5: 'Bitcoin Balance Check',
     6: 'Managing PrivateKey'
 };
 
