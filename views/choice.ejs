@@ -27,7 +27,6 @@ th, td {
       xmlhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
 
-//          $("tmpTag2").append(this.responseText);
           myObj = JSON.parse(this.responseText);
           txt = "<table border='1'>"
           for (x in myObj) {
@@ -77,7 +76,6 @@ th, td {
     // Make the actual CORS request.
     function makeCorsRequest(url_R) {
       // This is a sample server that supports CORS.
-//      var url = 'http://html5rocks-cors.s3-website-us-east-1.amazonaws.com/index.html';
       var url = url_R;
 
       var xhr = createCORSRequest('GET', url);
@@ -85,13 +83,25 @@ th, td {
         alert('CORS not supported');
         return;
       }
-
       // Response handlers.
       xhr.onload = function() {
-        var text = xhr.responseText;
-//        var title = getTitle(text);
-//        alert('Response from CORS request to ' + text);// + ': ' + title);
-        document.getElementById("tmpTag2").innerHTML = text;
+//        var text = xhr.responseText;
+//        document.getElementById("tmpTag2").innerHTML = text;
+          var myObj, txt;
+
+          myObj = JSON.parse(this.responseText);
+          console.log("myObj : " + myObj)
+
+          txt = "<table border='1'>"
+          for (x in myObj) {
+              txt += "<tr><td>"+"비트코인주소"+"</td><td>"+x+"</td></tr>"
+              +"<tr><td>"+"계좌밸런스"+"</td><td>" + myObj[x].final_balance + "</td></tr>"
+              +"<tr><td>"+"트랜젝선총량"+"</td><td>" + myObj[x].n_tx + "</td></tr>"
+              +"<tr><td>"+"수신총량"+"</td><td>" + myObj[x].total_received + "</td></tr>";
+          }
+          txt += "</table>"
+          document.getElementById("tmpTag2").innerHTML = txt;
+
       };
 
       xhr.onerror = function() {
@@ -103,6 +113,9 @@ th, td {
 
     function BitcoinBalanceCheck(){
       var invocation = new XMLHttpRequest();
+      //Single Address
+//      var url = 'https://blockchain.info/ko/rawaddr/122yec5T5TZwqpmgYfF4r9XbwRhgAC4SxK&cors=true';
+      //Balance
       var url = 'https://blockchain.info/ko/balance?active=1MjgTF2seggBa8cztpkW6kwxQvPKiCTZn1&cors=true';  //&cors=true     이게 핵심
       //var xmlhttp = new XMLHttpRequest();
 
