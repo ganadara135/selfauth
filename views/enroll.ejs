@@ -89,13 +89,15 @@ function createKeyAssetAccout() {
     if (this.readyState == 4 && this.status == 200) {
 //      document.getElementById("aliasKey").innerHTML = this.responseText;
 
+      alert(this.responseText);
+
       $("tmpTag2").append(this.responseText);
+      $("#doubleChkButton").hide();
       $("#createKeyButton").hide();
       document.getElementById("competeEnroll").disabled = false;
 
       var myJSON = JSON.stringify(this.responseText);
       localStorage.setItem("myJSONxpub", myJSON);
-
     }
   };
   var alias = document.getElementById("IDenroll").value;
@@ -105,7 +107,8 @@ function createKeyAssetAccout() {
 };
 function choice(){
   var enroll_id = document.getElementById("IDenroll").value;
-  location.href="/choice/"+enroll_id;    // 이 방식으로 전달하면 서버를 안거치므로 서버의 다른 파일들을(CSS 등)을 로드 못함
+  var userLang = "<%= lang %>";
+  location.href="/choice/"+enroll_id+"/"+userLang;    // 이 방식으로 전달하면 서버를 안거치므로 서버의 다른 파일들을(CSS 등)을 로드 못함
 }
 </script>
 
@@ -126,12 +129,12 @@ function choice(){
     <td><input type=password id=IDpassword2 ></td>
   </tr>
   <tr>
-    <td>  <button  onclick='checkID()' data-langNum="5">중복체크</button></td>
+    <td>  <button  id="doubleChkButton" onclick='checkID()' data-langNum="5">중복체크</button></td>
     <td>  <tmpTag1 data-langNum="6">아이디 중복체크결과 : </tmpTag1> </td>
   </tr>
   <tr>
-    <td> <button id="createKeyButton" onClick="createKeyAssetAccout()" disabled=true data-langNum="7"> 비밀키 생성 </button></td>
-    <td data-langNum="8"> 비밀키 생성결과 :  <tmpTag2>  </tmpTag2> </td>
+    <td> <button id="createKeyButton" onclick="createKeyAssetAccout()" disabled=true data-langNum="7"> 비밀키 생성 </button></td>
+    <td> <tmpTag2 data-langNum="8"> 비밀키 생성결과 :  </tmpTag2> </td>
   </tr>
   <tr><td colspan="2"><button id="competeEnroll" onclick="choice()" disabled=true data-langNum="9"> 완료 </button></td>
   </tr>
