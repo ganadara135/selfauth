@@ -9,7 +9,8 @@ tip : docker logs -f { $container id }  실시간으로 터미널에 stdout 함,
 3. 2017.7.3:17:22
 node 웹서버 실싱행 인수로 서버주소 및 체인코어서버 접근토근 넘기게 변경 (웹호팅서버에서)
 실행방법 : docker run --name myappc -p 80:3000 myapp node server.js  {체인코어접근토근} {서버주소}
-현재체인코어접근토근 : client:515714dbc996904e87f3630f6b83cd16cb8d96fc78fe2d79206e4caa8a194f53
+네이버클라이드 
+체인코어접근토근 : client:515714dbc996904e87f3630f6b83cd16cb8d96fc78fe2d79206e4caa8a194f53
 서버주소 : http://220.230.112.30:1999
 
 3. 2017.7.12:16:30
@@ -20,3 +21,8 @@ node 웹서버 실싱행 인수로 서버주소 및 체인코어서버 접근토
 
 5. 2017.7.17:18:30
 CORS 반영, 비트코인 블랙체인 계정정보 끌어오기 구현
+
+6. 아마존 aws 블록체인 토근 및 주소
+체인코어접근토근 : client:80e865c07f4225ded25750f5ebf62a6b96e416a8bb894f026b885c3dbf15c54f
+체인서버주소  : http://ec2-13-112-136-220.ap-northeast-1.compute.amazonaws.com:1999/
+             or  http://13.112.136.220:1999/
