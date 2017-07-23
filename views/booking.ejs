@@ -8,11 +8,14 @@
         background-color: black;
         border-color: white;
         color: white;
+        text-align: center;
     }
 
     table, th, td {
         border: 1px solid white;
         border-collapse: collapse;
+        float: none;
+        margin: 0 auto;
     }
     th, td {
         padding: 5px;
@@ -129,22 +132,28 @@
     </script>
   </head>
   <body onload="startTime()">
-      <form method="post">
-        <fieldset>
-          <ml data-langNum="0"> 사용일시 </ml> ( <ml data-langNum="1"> 현재시간: </ml> <divTime id="clock"></divTime>)<br>
-          <input type="date" name="bday" id="bday" max=""  required>
-          <input type="time" name="btime" id="btime" required><br>
-          <h4 data-langNum="2">사용용도</h4><br>
-          <input type="text" name="purpose" id="bpurpose"><br>
+      <form method="post" >
+        <table> <tr><td>
 
-          <fieldset>
-            <legend data-langNum="3">비밀키 입력</legend>
+          <ml data-langNum="0"> 사용일시 </ml> ( <ml data-langNum="1"> 현재시간: </ml> <divTime id="clock"></divTime>)</td>
+          <tr><td>
+          <input type="date" name="bday" id="bday" max=""  required>
+          <input type="time" name="btime" id="btime" required>
+        </td></tr>
+        <tr><td data-langNum="2">사용용도</td></tr>
+        <tr><td>
+          <input type="text" name="purpose" id="bpurpose">
+</td></tr>
+          <tr><td  data-langNum="3">비밀키 입력 </td></tr>
+          <tr><td>
             <input type="text" id="userXpub" >
             <input type="button" value="입력" onclick="setXpub()" data-langNum="4"><br>
-          </fieldset>
+          </td></tr>
+          <tr><td>
         <input type="button" value='예약등록 버튼' id="bookingButton" onclick="bookingUse()" data-langNum="5">
         <input type="button" value='나가기' id="goToChoiceId" onclick="goToChoice()" data-langNum="6">
-        </fieldset>
+        </td></tr>
+      </table>
       </form>
 
 <h2>Welcome! <%= IDname %> </h2>

@@ -1,30 +1,10 @@
 {
-	"mmm": {
-		"IDname": "mmm",
-		"password": "mmm"
-	},
 	"lll": {
 		"IDname": "lll",
 		"password": "lll"
 	},
-	"nnn": {
-		"IDname": "nnn",
-		"password": "nnn"
-	},
-	"ㅁㅁㅁ": {
-		"IDname": "ㅁㅁㅁ",
+	"aaa": {
+		"IDname": "aaa",
 		"password": "aaa"
-	},
-	"ㅠㅠㅠ": {
-		"IDname": "ㅠㅠㅠ",
-		"password": "bbb"
-	},
-	"ㅜㅜㅜ": {
-		"IDname": "ㅜㅜㅜ",
-		"password": "nnn"
-	},
-	"ㄴㄴㄴ": {
-		"IDname": "ㄴㄴㄴ",
-		"password": "sss"
 	}
 }

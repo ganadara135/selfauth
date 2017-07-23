@@ -7,11 +7,14 @@ body{
     background-color: black;
     border-color: white;
     color: white;
+    text-align: center;
 }
 
 table, th, td {
     border: 1px solid white;
     border-collapse: collapse;
+    float: none;
+    margin: 0 auto;
 }
 th, td {
     padding: 5px;
@@ -28,7 +31,7 @@ th, td {
         if (this.readyState == 4 && this.status == 200) {
 
           myObj = JSON.parse(this.responseText);
-          txt = "<table border='1'>"
+          txt = "<table border='1' text-align='center'>"
           for (x in myObj) {
               txt += "<tr><td>"+x+"</td><td>" + myObj[x] + "</td></tr>";
           }
@@ -92,7 +95,7 @@ th, td {
           myObj = JSON.parse(this.responseText);
           console.log("myObj : " + myObj)
 
-          txt = "<table border='1'>"
+          txt = "<table border='1' text-align='center'>"
           for (x in myObj) {
               txt += "<tr><td>"+"비트코인주소"+"</td><td>"+x+"</td></tr>"
               +"<tr><td>"+"계좌밸런스"+"</td><td>" + myObj[x].final_balance + "</td></tr>"
@@ -133,17 +136,26 @@ th, td {
 
     <% if(IDname){ %>
         <h2>Welcome! <%= IDname %> <%= amount %>  <%= lang %> </h2>
-        <tmpTag2 id="tmpTag2">  </tmpTag2><br>
+        <tmpTag2 id="tmpTag2" text-align='center'>  </tmpTag2><br>
         <button  onclick="watching()" data-langNum="0"> 사용내역확인 </button><br>
         <button  onclick="booking()" data-langNum="1">사용예약등록</button><br>
 
-        <fieldset>
-          <legend data-langNum="2">가능한 서비스</legend>
+        <table>
+          <tr><td data-langNum="2">가능한 서비스
+          </td></tr>
+          <tr><td>
           <button  onclick="manageWebPW()" data-langNum="3">웹사이트 계정관리</button><br>
+        </td></tr>
+            <tr><td>
           <button  onclick="manageNote()" data-langNum="4">비밀메모장</button><br>
+        </td></tr>
+        <tr><td>
           <button  onclick="BitcoinBalanceCheck()" data-langNum="5">비트코인 밸런스체크</button><br>
+        </td></tr>
+        <tr><td>
           <button  onclick="managePrivateKey()" data-langNum="6">비밀키 접근관리</button><br>
-        </fieldset>
+        </td></tr>
+        </table>
         <br>
         <button  onclick="logout()">Logout</button><br>
     <% }else{ %>
@@ -197,6 +209,9 @@ function setLanguage(currentLanguage) {
 //$('button').click(function() {
 
 var lang = "<%= lang %>";
+
+alert("lang : " + lang);
+
 if(lang != null)
   setLanguage(lang);
 

@@ -56,7 +56,7 @@ $(document).ready(function(){
 
   function enroll(){
 //    var lang = $(this).data('lang');
-    alert("global_lang_val ::::  " + global_lang_val)
+//    alert("global_lang_val ::::  " + global_lang_val)
 
     location.href="/enroll/"+global_lang_val;
   };
@@ -95,9 +95,10 @@ $(document).ready(function(){
 </div>
 
 <script>
-var global_lang_val;
+var global_lang_val = 'ko';
 // 언어팩 선언.
 $.lang = {};
+
 
 $.lang.ko = {
     0: '자바스크립트 다국어 처리.',
@@ -144,7 +145,7 @@ function setLanguage(currentLanguage) {
 $('.multiLang').click(function() {
   alert("Language switching");
   var lang = $(this).data('lang');
-  global_lang_val = lang;
+    global_lang_val = lang;
   setLanguage(lang);
 });
 

@@ -5,11 +5,14 @@
       background-color: black;
       border-color: white;
       color: white;
+      text-align: center;
   }
 
   table, th, td {
       border: 1px solid white;
       border-collapse: collapse;
+      float: none;
+      margin: 0 auto;
   }
   th, td {
       padding: 5px;
@@ -61,12 +64,16 @@
         <h2>Welcome! <%= IDname %> <%= amount %> </h2>
 
         <tableTag id="tableTag">  </tableTag>
-        <fieldset>
-          <legend>비밀노트장</legend>
+        <table>
+          <tr><td>비밀노트장</td></tr>
+        <tr><td>
           <textarea name="secureNote" id="secureNote" rows="10" cols="30">Typing here what you want to save securely</textarea>
+        </td></tr>
+        <tr><td>
           <input type="button" id="storeButton" onclick="storeUserData()" value="저장/변경">
           <input type="button" value='나가기' id="goToChoiceId" onclick="goToChoice()"></tr>
-        </fieldset>
+        </td></tr>
+        </table>
 
 
         <button  onclick="logout()">logout</button><br>
