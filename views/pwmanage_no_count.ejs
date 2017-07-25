@@ -8,10 +8,18 @@
 //      alert("lang : " + lang);
       location.href="/choice/"+userName +"/"+ "<%= lang %>";
     }
+    function goIntoTestEntrance(){
+      var userName = "<%= IDname %>";
+      var userLang = "<%= lang %>";
+      var testEntranceVal = "<%= testEntrance %>";
+      location.href="/"+testEntranceVal+"/"+userName +"/"+ userLang;
+    }
     </script>
   </head>
   <body text-align="center">
-    <h1> There are no able records. </h1>
-    <input type="button" value='Leave' id="goToChoiceId" onclick="goToChoice()"></td></tr>
+    <h1> There are no available records. </h1>
+
+    <input type="button" value='Leave' id="goToChoiceId" onclick="goToChoice()"><br>
+    <input type="button" value='Test Entrance' onclick="goIntoTestEntrance()"><br>
   </body>
 </html>

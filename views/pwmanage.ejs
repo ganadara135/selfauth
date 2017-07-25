@@ -21,169 +21,162 @@
   </style>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.3/jquery.min.js"></script>
 
-    <script>
-    $(document).ready(function(){
-      $("#currentSite").val(location.host);
-      loadEnrolledSiteList();
-    });
+  <script>
+  $(document).ready(function(){
+    $("#currentSite").val(location.host);
+    loadEnrolledSiteList();
+  });
 
-    function loadEnrolledSiteList(){
-      // Check browser support
-      if (typeof(Storage) !== "undefined") {
-          var arr = [];
-          arr = JSON.parse(localStorage.getItem("myPocket"));
-          if(arr !== null){
+  function loadEnrolledSiteList(){
+    // Check browser support
+    if (typeof(Storage) !== "undefined") {
+        var arr = [];
+        arr = JSON.parse(localStorage.getItem("myPocket"));
+        if(arr !== null){
 
-            var siteListEntry = $('<label>');
+          var siteListEntry = $('<label>');
 
-            for (var chk in arr) {      // 중복체크
-              var chkData = arr[chk];
-      //              var calendar = calendars[calendarId];
-              console.log("chkData[0] : ", chkData[0]);
-      //              var siteListEntry = $('<label>');
+          for (var chk in arr) {      // 중복체크
+            var chkData = arr[chk];
 
-              $('<input>').attr({
-                'type': 'radio',
-                'siteUrl': chkData[0],
-                'siteID': chkData[1],
-                'sitePW': chkData[2],
-                'radioCheck' : 'searchValue',
-                'checked': false,
-      //          'data-color': 'red'
-              }).addClass('site-checkbox').css({
-                'outline': 'none',
-      //                'background': calendar.visible ? calendar.backgroundColor : '',
-                'border': '1px solid'// + calendar.backgroundColor
-              }).on('change', function() {
-                var radioValue = $(this);
+            console.log("chkData[0] : ", chkData[0]);
+
+            $('<input>').attr({
+              'type': 'radio',
+              'siteUrl': chkData[0],
+              'siteID': chkData[1],
+              'sitePW': chkData[2],
+              'radioCheck' : 'searchValue',
+              'checked': false,
+    //          'data-color': 'red'
+            }).addClass('site-checkbox').css({
+              'outline': 'none',
+              'border': '1px solid'// + calendar.backgroundColor
+            }).on('change', function() {
+              var radioValue = $(this);
 //                radioValue.attr('checked', true);
-                radioValue.attr('radioCheck', null);
-                $('input:radio[radioCheck=searchValue]').attr('checked', false);
-
-//                console.log("111 checkBox.is(':checked')  : ", radioValue.is(':checked'));
-                $("#enrollSite").val(radioValue.attr("siteUrl"));  //값
-                $("#siteID").val(radioValue.attr("siteID"));  //value  부분
-                $("#sitePW").val(radioValue.attr("sitePW"));
-                radioValue.attr('checked', true);
-                radioValue.attr('radioCheck', 'searchValue');
-//                console.log("222 checkBox.is(':checked')  : ", radioValue.is(':checked'));
-//                (checkBox.is(':checked') ? checkBox.attr('checked',false) : checkBox.attr('checked',true))
-//checkBox.css({'background': checkBox.is(':checked') ? checkBox.attr('data-color') : ''});
-//                arr[ checkBox.attr('siteUrl') ].visible = checkBox.is(':checked');
-            }).appendTo(siteListEntry);
+              radioValue.attr('radioCheck', null);
+              $('input:radio[radioCheck=searchValue]').attr('checked', false);
+              $("#enrollSite").val(radioValue.attr("siteUrl"));  //값
+              $("#siteID").val(radioValue.attr("siteID"));  //value  부분
+              $("#sitePW").val(radioValue.attr("sitePW"));
+              radioValue.attr('checked', true);
+              radioValue.attr('radioCheck', 'searchValue');
+          }).appendTo(siteListEntry);
 //    }).text(' '+chkData[0] +'/'+chkData[1]+'/'+chkData[2]).appendTo(siteListEntry);
 
-              $('<span>').text(' '+chkData[0] +'/'+chkData[1]+'/'+chkData[2]).appendTo(siteListEntry);
-
-              siteListEntry.appendTo($('#tableTag'));
-            }
+            $('<span>').text(' '+chkData[0] +'/'+chkData[1]+'/'+chkData[2]).appendTo(siteListEntry);
+            siteListEntry.appendTo($('#tableTag'));
           }
-      } else {
-          document.getElementById("tableTag").innerHTML = "Sorry, your browser does not support Web Storage...";
+        }
+    } else {
+        document.getElementById("tableTag").innerHTML = "Sorry, your browser does not support Web Storage...";
+    }
+  };
+
+  function watching(){
+    var txt, x, myObj;
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+
+//          $("tmpTag2").append(this.responseText);
+        myObj = JSON.parse(this.responseText);
+        txt = "<table border='1'>"
+        for (x in myObj) {
+            txt += "<tr><td>"+x+"</td><td>" + myObj[x] + "</td></tr>";
+        }
+        txt += "</table>"
+        document.getElementById("tableTag").innerHTML = txt;
       }
     };
 
-    function watching(){
-      var txt, x, myObj;
-      var xmlhttp = new XMLHttpRequest();
-      xmlhttp.onreadystatechange = function() {
-        if (this.readyState == 4 && this.status == 200) {
+    var alias = "<%= IDname %>";
+    xmlhttp.open("POST", "/watching/"+alias, true);
+    xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xmlhttp.send();
+    //xmlhttp.send("IDname="+alias+"&"+"password=" + enroll_pw);
+  }
 
-//          $("tmpTag2").append(this.responseText);
-          myObj = JSON.parse(this.responseText);
-          txt = "<table border='1'>"
-          for (x in myObj) {
-              txt += "<tr><td>"+x+"</td><td>" + myObj[x] + "</td></tr>";
+  function delUserData(){
+    if (typeof(Storage) !== "undefined") {
+        var arr = [];
+        arr = JSON.parse(localStorage.getItem("myPocket"));
+
+        if(arr !== null){
+
+          for (var chk in arr) {      // 중복체크
+            var chkData = arr[chk];
+
+            if(chkData[0] == $("#enrollSite").val())
+            {
+              if (confirm(chkData[0] + "를 삭제하시겠습니까?") == true) {
+                  arr[chk] = null;
+                  arr.splice(chk,1);
+                  alert("chk   :  " + chk);
+                  localStorage.setItem("myPocket", JSON.stringify(arr));
+                  $('#tableTag').html("");
+                  loadEnrolledSiteList();
+              }
+              return;
+            }
           }
-          txt += "</table>"
-          document.getElementById("tableTag").innerHTML = txt;
+          //arr.push(enrolledSite);
         }
-      };
-
-      var alias = "<%= IDname %>";
-      xmlhttp.open("POST", "/watching/"+alias, true);
-      xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-      xmlhttp.send();
-      //xmlhttp.send("IDname="+alias+"&"+"password=" + enroll_pw);
+        document.getElementById("tableTag").innerHTML = "Sorry, It would be first time to use.";
+    } else {
+        document.getElementById("tableTag").innerHTML = "Sorry, your browser does not support Web Storage...";
     }
+  }
 
-    function delUserData(){
-      if (typeof(Storage) !== "undefined") {
-          var arr = [];
-          arr = JSON.parse(localStorage.getItem("myPocket"));
+  function storeUserData(){
+    var enrolledSite = [
+                            $("#enrollSite").val(),  //값
+                            $("#siteID").val(),  //value  부분
+                            $("#sitePW").val()
+                        ];
 
-          if(arr !== null){
+    // Check browser support
+    if (typeof(Storage) !== "undefined") {
+        var arr = [];
+        arr = JSON.parse(localStorage.getItem("myPocket"));
 
-            for (var chk in arr) {      // 중복체크
-              var chkData = arr[chk];
+        if(arr !== null){
 
-              if(chkData[0] == $("#enrollSite").val())
-              {
-                if (confirm(chkData[0] + "를 삭제하시겠습니까?") == true) {
-                    arr[chk] = null;
-                    arr.splice(chk,1);
-                    alert("chk   :  " + chk);
-                    localStorage.setItem("myPocket", JSON.stringify(arr));
-                    $('#tableTag').html("");
-                    loadEnrolledSiteList();
-                }
-                return;
+          for (var chk in arr) {      // 중복체크
+            var chkData = arr[chk];
+
+            if(chkData[0] == $("#enrollSite").val())
+            {
+              if (confirm("등록된 사이트입니다. 계정을 변경하시겠습니까?") == true) {
+                  arr[chk] = enrolledSite;
+                  localStorage.setItem("myPocket", JSON.stringify(arr));
+                  $('#tableTag').html("");
+                  loadEnrolledSiteList();
               }
+              return;
             }
-            //arr.push(enrolledSite);
           }
-          document.getElementById("tableTag").innerHTML = "Sorry, It would be first time to use.";
-      } else {
-          document.getElementById("tableTag").innerHTML = "Sorry, your browser does not support Web Storage...";
-      }
+          arr.push(enrolledSite);
+//          $('#tableTag').html("");
+//          loadEnrolledSiteList();
+        }else{
+          arr = new Array(enrolledSite)
+        }
+        localStorage.setItem("myPocket", JSON.stringify(arr));
+    } else {
+        document.getElementById("tableTag").innerHTML = "Sorry, your browser does not support Web Storage...";
     }
+  }
 
-    function storeUserData(){
-      var enrolledSite = [
-                              $("#enrollSite").val(),  //값
-                              $("#siteID").val(),  //value  부분
-                              $("#sitePW").val()
-                          ];
-
-      // Check browser support
-      if (typeof(Storage) !== "undefined") {
-          var arr = [];
-          arr = JSON.parse(localStorage.getItem("myPocket"));
-
-          if(arr !== null){
-
-            for (var chk in arr) {      // 중복체크
-              var chkData = arr[chk];
-
-              if(chkData[0] == $("#enrollSite").val())
-              {
-                if (confirm("등록된 사이트입니다. 계정을 변경하시겠습니까?") == true) {
-                    arr[chk] = enrolledSite;
-                    localStorage.setItem("myPocket", JSON.stringify(arr));
-                    $('#tableTag').html("");
-                    loadEnrolledSiteList();
-                }
-                return;
-              }
-            }
-            arr.push(enrolledSite);
-          }else{
-            arr = new Array(enrolledSite)
-          }
-          localStorage.setItem("myPocket", JSON.stringify(arr));
-      } else {
-          document.getElementById("tableTag").innerHTML = "Sorry, your browser does not support Web Storage...";
-      }
-    }
-
-    function goToChoice(){
-      var userName = "<%= IDname %>";
-      location.href="/choice/"+userName +"/"+ "<%= lang %>";
-    }
-    function logout(){
-      location.href="/logout";
-    }
-    </script>
+  function goToChoice(){
+    var userName = "<%= IDname %>";
+    location.href="/choice/"+userName +"/"+ "<%= lang %>";
+  }
+  function logout(){
+    location.href="/logout";
+  }
+  </script>
   </head>
   <body>
     <% if(IDname){ %>

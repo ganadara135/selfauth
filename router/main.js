@@ -12,6 +12,49 @@ module.exports = function(app, fs, jsonParser, urlencodedParser, client_token_ar
 {
   const client = new chain.Client(address_param,client_token_arg);
 
+  app.get('/testEntranceSecureNote/:IDname/:lang',function(req,res){
+      var sess = req.session;
+      var userName = req.params.IDname;
+      var userLang = req.params.lang;
+      var result = [];
+
+      res.render('secureNote', {
+          title: "비밀노트장",
+          length: 5,
+          IDname: userName,
+          amount: result,
+          lang: userLang
+      })
+  });
+
+  app.get('/testEntrancePWmanage/:IDname/:lang',function(req,res){
+      var sess = req.session;
+      var userName = req.params.IDname;
+      var userLang = req.params.lang;
+      var result = [];
+
+      res.render('pwmanage', {
+          title: "웹사이트 비밀번호관리",
+          length: 5,
+          IDname: userName,
+          amount: result,
+          lang: userLang
+      })
+  });
+  app.get('/testEntranceSecureNote/:IDname/:lang',function(req,res){
+      var sess = req.session;
+      var userName = req.params.IDname;
+      var userLang = req.params.lang;
+      var result = [];
+
+      res.render('secureNote', {
+          title: "웹사이트 비밀번호관리",
+          length: 5,
+          IDname: userName,
+          amount: result,
+          lang: userLang
+      })
+  });
   app.get('/',urlencodedParser,function(req,res){
       var sess = req.session;
 
@@ -37,7 +80,7 @@ module.exports = function(app, fs, jsonParser, urlencodedParser, client_token_ar
           client.transactions.queryAll({
             filter: 'outputs(account_alias=$1)',
             filterParams: [userName],
-            startTime: (Date.now()- (60000*10*6) )  //  within a hour
+            startTime: (Date.now()- (60000*10*6*2) )  // bring transactions created within 2 hour
       //      setEndTime: (Date.now()) //- (60000*10*6) )
           }, (tx, next, done) => {
             console.log(userName + " 's transaction: " + tx.id)
@@ -53,7 +96,13 @@ module.exports = function(app, fs, jsonParser, urlencodedParser, client_token_ar
 
               var chkDate = new Date(output.referenceData.formatDate);
 
-              if(chkDate.getTime() > currentDate.getTime() ){
+
+              console.log("chkDate.toString() : " + chkDate.toString());
+              console.log("currentDate.toString() : " + currentDate.toString());
+              //  전제조건 : 생성된지 2시간 이내의 트랜잭션만 가져옴
+              //  조건 1  : 현재시간보다 예약시간이 작고,
+              //  조건 2  : 현재시간의 30분 이내의 시간으로 예약된 시간
+              if(chkDate.getTime() <= currentDate.getTime() && (chkDate.getTime() + (60000*10*3) >= currentDate.getTime()) ){
                 test_count++;
                 console.log("test_count : ", test_count);
               }
@@ -75,7 +124,8 @@ module.exports = function(app, fs, jsonParser, urlencodedParser, client_token_ar
                 length: 5,
                 IDname: userName,
                 amount: result,
-                lang: userLang
+                lang: userLang,
+                testEntrance: "testEntranceSecureNote"
             })
           }
         }
@@ -105,7 +155,7 @@ module.exports = function(app, fs, jsonParser, urlencodedParser, client_token_ar
           client.transactions.queryAll({
             filter: 'outputs(account_alias=$1)',
             filterParams: [userName],
-            startTime: (Date.now()- (60000*10*6) )  //  within a hour
+            startTime: (Date.now()- (60000*10*6*2) )  // bring transactions created within 2 hour
       //      setEndTime: (Date.now()) //- (60000*10*6) )
           }, (tx, next, done) => {
             console.log(userName + " 's transaction: " + tx.id)
@@ -123,11 +173,15 @@ module.exports = function(app, fs, jsonParser, urlencodedParser, client_token_ar
               //console.log('+' + output.amount + ' ' + output.assetAlias)
               var chkDate = new Date(output.referenceData.formatDate);
 
-      //              var difMill = (currentDate.getTimezoneOffset() * 60000 )
-
-              if(chkDate.getTime() > currentDate.getTime() ){
+              console.log("chkDate.toString() : " + chkDate.toString());
+              console.log("currentDate.toString() : " + currentDate.toString());
+              //  전제조건 : 생성된지 2시간 이내의 트랜잭션만 가져옴
+              //  조건 1  : 현재시간보다 예약시간이 작고,
+              //  조건 2  : 현재시간의 30분 이내의 시간으로 예약된 시간
+              if(chkDate.getTime() <= currentDate.getTime() && (chkDate.getTime() + (60000*10*3) >= currentDate.getTime()) ){
                 test_count++;
                 console.log("test_count : ", test_count);
+
                 result["유효예약숫자"] = test_count;
 
                 result["formatDate["+test_count+"]"] = output.referenceData.formatDate;
@@ -151,7 +205,8 @@ module.exports = function(app, fs, jsonParser, urlencodedParser, client_token_ar
                 length: 5,
                 IDname: userName,
                 amount: result,
-                lang: userLang
+                lang: userLang,
+                testEntrance: "testEntrancePWmanage"
             })
           }
         }
@@ -164,8 +219,6 @@ module.exports = function(app, fs, jsonParser, urlencodedParser, client_token_ar
          });
            throw err })
       )
-
-
   });
 
   app.get('/choice/:IDname/:lang',function(req,res){
@@ -197,7 +250,7 @@ module.exports = function(app, fs, jsonParser, urlencodedParser, client_token_ar
           client.transactions.queryAll({
             filter: 'outputs(account_alias=$1)',
             filterParams: [userName],
-            startTime: (Date.now()- (60000*10*6) )  //  within a hour
+            startTime: (Date.now()- (60000*10*6*2) )  // bring transactions created within 2 hour
       //      setEndTime: (Date.now()) //- (60000*10*6) )
           }, (tx, next, done) => {
             console.log(userName + " 's transaction: " + tx.id)
@@ -217,8 +270,9 @@ module.exports = function(app, fs, jsonParser, urlencodedParser, client_token_ar
               //console.log('+' + output.amount + ' ' + output.assetAlias)
               var chkDate = new Date(output.referenceData.formatDate);
 
-//              var difMill = (currentDate.getTimezoneOffset() * 60000 )
-
+              console.log("chkDate.toString() : " + chkDate.toString());
+              console.log("currentDate.toString() : " + currentDate.toString());
+              
               if(chkDate.getTime() > currentDate.getTime() ){
                 test_count++;
                 console.log("test_count : ", test_count);

@@ -37,27 +37,27 @@
       }
     });
 
-    function storeUserData(){
+  function storeUserData(){
 
-      // Check browser support
-      if (typeof(Storage) !== "undefined") {
-          alert(document.getElementById("secureNote").value + "Stored.")
-          localStorage.setItem("mySecureNote", JSON.stringify(document.getElementById("secureNote").value));
-          document.getElementById("secureNote").value = "";
-      } else {
-          document.getElementById("tableTag").innerHTML = "Sorry, your browser does not support Web Storage...";
-      }
+    // Check browser support
+    if (typeof(Storage) !== "undefined") {
+        alert(document.getElementById("secureNote").value + "Stored.")
+        localStorage.setItem("mySecureNote", JSON.stringify(document.getElementById("secureNote").value));
+        document.getElementById("secureNote").value = "";
+    } else {
+        document.getElementById("tableTag").innerHTML = "Sorry, your browser does not support Web Storage...";
     }
+  }
 
-    function goToChoice(){
-      var userName = "<%= IDname %>";
-      var userLang = "<%= lang %>";
-      location.href="/choice/"+userName +"/"+userLang;
-    }
-    function logout(){
-      location.href="/logout";
-    }
-    </script>
+  function goToChoice(){
+    var userName = "<%= IDname %>";
+    var userLang = "<%= lang %>";
+    location.href="/choice/"+userName +"/"+userLang;
+  }
+  function logout(){
+    location.href="/logout";
+  }
+  </script>
   </head>
   <body>
     <% if(IDname){ %>
